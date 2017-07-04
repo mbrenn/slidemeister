@@ -1,6 +1,6 @@
 ﻿using System;
-using SlideMeister.Logic;
-using SlideMeister.Model;
+using SlideMeisterLib.Logic;
+using SlideMeisterLib.Model;
 
 namespace SlideMeisterConsole
 {

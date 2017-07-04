@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace SlideMeister.Model
+namespace SlideMeisterLib.Model
 {
     /// <summary>
     /// Defines the machine which contains items with different states

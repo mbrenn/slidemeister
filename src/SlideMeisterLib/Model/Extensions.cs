@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-namespace SlideMeister.Model
+namespace SlideMeisterLib.Model
 {
     public static class Extensions
     {

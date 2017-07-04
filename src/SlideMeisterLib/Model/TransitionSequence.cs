@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace SlideMeister.Model
+namespace SlideMeisterLib.Model
 {
     public class TransitionSequence
     {

@@ -1,8 +1,8 @@
 ﻿using System.Diagnostics;
 using System.Linq;
-using SlideMeister.Model;
+using SlideMeisterLib.Model;
 
-namespace SlideMeister.Logic
+namespace SlideMeisterLib.Logic
 {
     public class MachineLogic
     {

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace SlideMeister.Model
+namespace SlideMeisterLib.Model
 {
     public class OverlayType
     {

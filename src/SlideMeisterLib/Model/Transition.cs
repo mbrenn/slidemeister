@@ -1,4 +1,4 @@
-﻿namespace SlideMeister.Model
+﻿namespace SlideMeisterLib.Model
 {
     public class Transition
     {

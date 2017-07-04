@@ -3,9 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26430.14
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SlideMeister", "SlideMeister.csproj", "{170ECB99-13F7-4F93-B036-B3377DD4D52E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SlideMeisterLib", "SlideMeisterLib\SlideMeisterLib.csproj", "{170ECB99-13F7-4F93-B036-B3377DD4D52E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SlideMeisterConsole", "..\SlideMeisterConsole\SlideMeisterConsole.csproj", "{4F3CC273-6F91-4E6F-8DF6-43BEB3792C4C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SlideMeisterConsole", "SlideMeisterConsole\SlideMeisterConsole.csproj", "{4F3CC273-6F91-4E6F-8DF6-43BEB3792C4C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Library", "Library", "{CA4AE794-A2F1-40C6-B6AC-212745F18756}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Applications", "Applications", "{9E5AB792-3CFF-4C43-A099-CD6E8EF8F660}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -24,5 +28,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{170ECB99-13F7-4F93-B036-B3377DD4D52E} = {CA4AE794-A2F1-40C6-B6AC-212745F18756}
+		{4F3CC273-6F91-4E6F-8DF6-43BEB3792C4C} = {9E5AB792-3CFF-4C43-A099-CD6E8EF8F660}
 	EndGlobalSection
 EndGlobal

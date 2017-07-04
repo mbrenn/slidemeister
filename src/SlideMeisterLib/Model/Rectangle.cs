@@ -1,6 +1,6 @@
 ﻿using System.Security.Cryptography.X509Certificates;
 
-namespace SlideMeister.Model
+namespace SlideMeisterLib.Model
 {
     public class Rectangle
     {
