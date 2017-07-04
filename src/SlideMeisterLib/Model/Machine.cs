@@ -12,6 +12,11 @@ namespace SlideMeisterLib.Model
         /// </summary>
         public string Name { get; set; }
 
+        /// <summary>
+        /// Gets or sets the url of the background image
+        /// </summary>
+        public string BackgroundImageUrl { get; set; }
+
         public string Version { get; set; }
 
         public List<OverlayItem> Items { get; set; } = new List<OverlayItem>();

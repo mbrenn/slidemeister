@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="210mm"
+   height="297mm"
+   viewBox="0 0 210 297"
+   version="1.1"
+   id="svg8"
+   inkscape:version="0.92.1 r15371"
+   sodipodi:docname="leds.svg"
+   inkscape:export-filename="C:\Projekte\SlideMeister\src\SlideMeister\examples\leds\leds.png"
+   inkscape:export-xdpi="96"
+   inkscape:export-ydpi="96">
+  <defs
+     id="defs2" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="1.4"
+     inkscape:cx="323.10806"
+     inkscape:cy="503.58651"
+     inkscape:document-units="mm"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="3840"
+     inkscape:window-height="2081"
+     inkscape:window-x="1591"
+     inkscape:window-y="17"
+     inkscape:window-maximized="1"
+     inkscape:snap-global="false" />
+  <metadata
+     id="metadata5">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Ebene 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <rect
+       id="rect3680"
+       width="200"
+       height="280"
+       x="0"
+       y="17"
+       style="stroke-width:0.25554302;fill:#b3b3b3" />
+    <rect
+       id="rect3680-8"
+       width="165.78949"
+       height="242.58226"
+       x="17.105255"
+       y="35.70887"
+       style="fill:#e6e6e6;stroke-width:6.117;stroke:#000000;stroke-opacity:0.74060148;stroke-miterlimit:4;stroke-dasharray:none" />
+    <circle
+       style="fill:#0000ff;stroke:#000000;stroke-width:8.30018806;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.74060148"
+       id="path4502"
+       cx="100"
+       cy="99.882736"
+       r="35.645008" />
+    <circle
+       style="fill:#0000ff;stroke:#000000;stroke-width:8.30018806;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.74060148"
+       id="path4502-7"
+       cx="100"
+       cy="213.58336"
+       r="35.645008" />
+    <circle
+       style="fill:#00ff00;stroke:#000000;stroke-width:8.30018806;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.74060148"
+       id="path4502-3"
+       cx="-104.6994"
+       cy="83.632439"
+       r="35.645012"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96" />
+    <circle
+       style="fill:#ff0000;stroke:#000000;stroke-width:8.30018806;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.74060148"
+       id="path4502-3-2"
+       cx="-109.04613"
+       cy="172.45685"
+       r="35.645016"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96" />
+  </g>
+</svg>
