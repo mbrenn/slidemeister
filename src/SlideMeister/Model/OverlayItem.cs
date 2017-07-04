@@ -3,6 +3,7 @@
     public class OverlayItem
     {
         public string Name { get; set; }
+
         public Rectangle Position { get; set; }
 
         public OverlayType Type { get; set; }
@@ -13,6 +14,11 @@
         {
             Type = type;
             CurrentState = Type.DefaultState;
+        }
+
+        public override string ToString()
+        {
+            return $"{Name} of Type {Type.Name} ({CurrentState})";
         }
     }
 }

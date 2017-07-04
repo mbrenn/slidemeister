@@ -10,15 +10,16 @@ namespace SlideMeister.Model
 
         public List<OverlayItem> Items { get; set; } = new List<OverlayItem>();
 
-        public List<OverlayType> Types { get; set; } = new List<OverlayType>();
-
-        public List<TransitionSet> Transitions { get; set; } = new List<TransitionSet>();
-
         public List<TransitionSequence> Sequences { get; set; } = new List<TransitionSequence>();
 
         public void AddItem(OverlayItem item)
         {
             Items.Add(item);
+        }
+
+        public override string ToString()
+        {
+            return Name;
         }
     }
 }

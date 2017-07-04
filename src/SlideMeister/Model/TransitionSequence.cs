@@ -8,5 +8,10 @@ namespace SlideMeister.Model
 
         public List<TransitionSequenceStep> Steps { get; set; }
             = new List<TransitionSequenceStep>();
+
+        public override string ToString()
+        {
+            return Name;
+        }
     }
 }

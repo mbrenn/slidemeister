@@ -1,4 +1,6 @@
-﻿namespace SlideMeister.Model
+﻿using System.Security.Cryptography.X509Certificates;
+
+namespace SlideMeister.Model
 {
     public class Rectangle
     {
@@ -9,5 +11,10 @@
         public double Width { get; set; }
 
         public double Height { get; set; }
+
+        public override string ToString()
+        {
+            return $"{X}, {Y} ({Width}, {Height})";
+        }
     }
 }

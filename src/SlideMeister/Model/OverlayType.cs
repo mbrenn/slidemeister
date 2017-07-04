@@ -26,5 +26,10 @@ namespace SlideMeister.Model
             get => _defaultState ?? States.FirstOrDefault();
             set => _defaultState = value;
         }
+
+        public override string ToString()
+        {
+            return $"{Name}";
+        }
     }
 }

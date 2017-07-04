@@ -11,5 +11,10 @@
             Item = item;
             State = state;
         }
+
+        public override string ToString()
+        {
+            return $"{Item.Name} -> {State.Name}";
+        }
     }
 }
