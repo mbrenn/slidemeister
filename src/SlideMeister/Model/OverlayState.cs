@@ -2,6 +2,9 @@
 {
     public class OverlayState
     {
+        /// <summary>
+        /// Gets or sets the name of the state
+        /// </summary>
         public string Name { get; set; }
 
         public string ImageUrl { get; set; }

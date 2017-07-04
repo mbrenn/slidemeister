@@ -2,8 +2,14 @@
 
 namespace SlideMeister.Model
 {
+    /// <summary>
+    /// Defines the machine which contains items with different states
+    /// </summary>
     public class Machine
     {
+        /// <summary>
+        /// Gets or sets the name of the machine
+        /// </summary>
         public string Name { get; set; }
 
         public string Version { get; set; }

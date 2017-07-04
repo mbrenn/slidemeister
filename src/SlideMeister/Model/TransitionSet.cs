@@ -15,6 +15,19 @@ namespace SlideMeister.Model
         /// </summary>
         public List<Transition> Transitions { get; set; } = new List<Transition>();
 
+        /// <summary>
+        /// Initializes a new instance of the TransitionSet
+        /// </summary>
+        /// <param name="transitions">Array for transitions</param>
+        public TransitionSet(params Transition[] transitions)
+        {
+            foreach (var transition in transitions)
+            {
+                Transitions.Add(transition);
+            }
+        }
+
+
         public override string ToString()
         {
             return Name;
