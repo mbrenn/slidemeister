@@ -27,10 +27,29 @@ namespace SlideMeister
         /// </summary>
         private Machine _machine;
 
+        private double _ratioWidthToHeight;
+
         /// <summary>
         /// Stores a dictionary of images which are loaded by the states
         /// </summary>
-        private readonly Dictionary<OverlayState, Image> _imagesForStates = new Dictionary<OverlayState, Image>();
+        private readonly Dictionary<OverlayState, BitmapImage> _imagesForStates = new Dictionary<OverlayState, BitmapImage>();
+
+        /// <summary>
+        /// Stores the background image being used for the presentation
+        /// </summary>
+        private Image _backgroundImage;
+
+        /// <summary>
+        /// Stores the dictionary between overlay items and their corresponding image
+        /// </summary>
+        private Dictionary<OverlayItem, Image> _imagesForItems = new Dictionary<OverlayItem, Image>();
+
+        private Size GetArchitectureSize()
+        {
+            return new Size(
+                BackgroundCanvas.ActualWidth,
+                BackgroundCanvas.ActualHeight);
+        }
 
         /// <summary>
         /// Initializes a new instance of the MainWindow
@@ -44,12 +63,44 @@ namespace SlideMeister
             LoadImages();
         }
 
+        /// <summary>
+        /// Scales the coordinates of absolute value to a rectangle in which the ratio is defined as in _ratioWidthToHeight
+        /// </summary>
+        /// <param name="x">X coordinate in relative position (0.0-1.0)</param>
+        /// <param name="y">Y coordinate in relative position (0.0-1.0)</param>
+        /// <param name="width">Width in relative size</param>
+        /// <param name="height">Height in relative size</param>
+        /// <returns>Rectangle containing the absolute coordinate in pixels for WPF</returns>
+        public Rect ScaleToRect(double x, double y, double width, double height)
+        {
+            if (Math.Abs(_ratioWidthToHeight) < 1E-7 || ActualWidth < 1E-7 || ActualHeight < 1E-7)
+            {
+                return new Rect(0, 0, 0, 0);
+            }
+
+            var totalSize = GetArchitectureSize();
+
+            var newHeight = Math.Min(totalSize.Height, totalSize.Width / _ratioWidthToHeight);
+            var newWidth = newHeight * _ratioWidthToHeight;
+
+            var offsetX = (totalSize.Width - newWidth) / 2;
+            var offsetY = (totalSize.Height - newHeight) / 2;
+
+
+
+            return new Rect(
+                newWidth * x + offsetX,
+                newHeight * y + offsetY,
+                newWidth * width,
+                newHeight * height
+            );
+        }
+
         public void LoadImages()
         {
             var path = System.IO.Path.Combine(Environment.CurrentDirectory, _machine.BackgroundImageUrl);
             var bitmap = new BitmapImage(new Uri(path));
-            
-            BackgroundCanvas.Children.Add(new Image { Source = bitmap });
+            _ratioWidthToHeight = bitmap.Width / bitmap.Height;
 
             var states = _machine.Items.SelectMany(x => x.Type.States).Distinct();
             foreach (var state in states)
@@ -57,8 +108,26 @@ namespace SlideMeister
                 path = System.IO.Path.Combine(Environment.CurrentDirectory, _machine.BackgroundImageUrl);
                 bitmap = new BitmapImage(new Uri(path));
 
-                var image = new Image { Source = bitmap };
-                _imagesForStates[state] = image;
+                _imagesForStates[state] = bitmap;
+            }
+
+            // Create Child Images
+
+            _backgroundImage = new Image {Source = bitmap};
+            BackgroundCanvas.Children.Add(_backgroundImage);
+
+            UpdatePositions();
+        }
+
+        public void UpdatePositions()
+        {
+            if (_backgroundImage != null)
+            {
+                var backgroundPosition = ScaleToRect(0, 0, 1.0, 1.0);
+                Canvas.SetLeft(_backgroundImage, backgroundPosition.Left);
+                Canvas.SetTop(_backgroundImage, backgroundPosition.Top);
+                _backgroundImage.Width = backgroundPosition.Width;
+                _backgroundImage.Height = backgroundPosition.Height;
             }
         }
 
@@ -91,5 +160,9 @@ namespace SlideMeister
             _machine.Sequences.Add(sequence);
         }
 
+        private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            UpdatePositions();
+        }
     }
 }
