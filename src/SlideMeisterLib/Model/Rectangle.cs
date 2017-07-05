@@ -16,5 +16,18 @@ namespace SlideMeisterLib.Model
         {
             return $"{X}, {Y} ({Width}, {Height})";
         }
+
+        public Rectangle()
+        {
+                
+        }
+
+        public Rectangle(double x, double y, double width, double height)
+        {
+            X = x;
+            Y = y;
+            Width = width;
+            Height = height;
+        }
     }
 }

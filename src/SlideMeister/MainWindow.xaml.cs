@@ -63,6 +63,7 @@ namespace SlideMeister
             LoadImages();
         }
 
+
         /// <summary>
         /// Scales the coordinates of absolute value to a rectangle in which the ratio is defined as in _ratioWidthToHeight
         /// </summary>
@@ -105,20 +106,49 @@ namespace SlideMeister
             var states = _machine.Items.SelectMany(x => x.Type.States).Distinct();
             foreach (var state in states)
             {
-                path = System.IO.Path.Combine(Environment.CurrentDirectory, _machine.BackgroundImageUrl);
-                bitmap = new BitmapImage(new Uri(path));
+                path = System.IO.Path.Combine(Environment.CurrentDirectory, state.ImageUrl);
+                var itemBitmap = new BitmapImage(new Uri(path));
 
-                _imagesForStates[state] = bitmap;
+                _imagesForStates[state] = itemBitmap;
             }
 
-            // Create Child Images
 
-            _backgroundImage = new Image {Source = bitmap};
+            // Creates the actuatl imagesImages
+            BackgroundCanvas.Children.Clear();
+            _backgroundImage = new Image { Source = bitmap };
             BackgroundCanvas.Children.Add(_backgroundImage);
+
+            foreach (var item in _machine.Items)
+            {
+                var imageForItem = new Image();
+                _imagesForItems[item] = imageForItem;
+                BackgroundCanvas.Children.Add(imageForItem);
+            }
+
+            UpdateStates();
 
             UpdatePositions();
         }
 
+        /// <summary>
+        /// Updates all the images as given by the state of each item
+        /// </summary>
+        public void UpdateStates()
+        {
+            foreach (var pair in _imagesForItems)
+            {
+                var state = pair.Key.CurrentState;
+                if (_imagesForStates.TryGetValue(state, out BitmapImage source))
+                {
+                    pair.Value.Source = source;
+                }
+
+            }
+        }
+
+        /// <summary>
+        /// Updates all positions when the window is resized
+        /// </summary>
         public void UpdatePositions()
         {
             if (_backgroundImage != null)
@@ -128,6 +158,21 @@ namespace SlideMeister
                 Canvas.SetTop(_backgroundImage, backgroundPosition.Top);
                 _backgroundImage.Width = backgroundPosition.Width;
                 _backgroundImage.Height = backgroundPosition.Height;
+            }
+
+
+            foreach (var pair in _imagesForItems)
+            {
+                var rect = ScaleToRect(
+                    pair.Key.Position.X,
+                    pair.Key.Position.Y,
+                    pair.Key.Position.Width,
+                    pair.Key.Position.Height);
+
+                Canvas.SetLeft(pair.Value, rect.Left);
+                Canvas.SetTop(pair.Value, rect.Top);
+                pair.Value.Width = rect.Width;
+                pair.Value.Height = rect.Height;
             }
         }
 
@@ -141,8 +186,16 @@ namespace SlideMeister
             led.AddState(onState);
             led.AddState(offState);
 
-            var firstLed = new OverlayItem(led);
-            var secondLed = new OverlayItem(led);
+            var firstLed = new OverlayItem(led)
+            {
+                Position = new SlideMeisterLib.Model.Rectangle(0.4, 0.2, 0.2, 0.2)
+            };
+
+            var secondLed = new OverlayItem(led)
+            {
+                Position = new SlideMeisterLib.Model.Rectangle(0.4, 0.6, 0.2, 0.2),
+                CurrentState = offState
+            };
 
             _machine.AddItem(firstLed);
             _machine.AddItem(secondLed);
