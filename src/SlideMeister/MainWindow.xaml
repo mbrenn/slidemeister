@@ -6,7 +6,17 @@
         xmlns:local="clr-namespace:SlideMeister"
         mc:Ignorable="d"
         Title="SlideMeister" Height="350" Width="525" SizeChanged="Window_SizeChanged">
-    <Canvas x:Name="BackgroundCanvas">
+    <Grid>
+       <Grid.ColumnDefinitions>
+           <ColumnDefinition Width="80*"></ColumnDefinition>
+           <ColumnDefinition Width="20*"></ColumnDefinition>
+        </Grid.ColumnDefinitions> 
+        <Canvas x:Name="BackgroundCanvas">
+
+        </Canvas>
+        <StackPanel Grid.Column="1" Orientation="Vertical" x:Name="StateButtons"></StackPanel>
+            
         
-    </Canvas>
+    </Grid>
+    
 </Window>

@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using SlideMeister.ViewModels;
 
 namespace SlideMeister
 {
@@ -42,8 +43,12 @@ namespace SlideMeister
         /// <summary>
         /// Stores the dictionary between overlay items and their corresponding image
         /// </summary>
-        private Dictionary<OverlayItem, Image> _imagesForItems = new Dictionary<OverlayItem, Image>();
+        private readonly List<ItemView> _items = new List<ItemView>();
 
+        /// <summary>
+        /// Gets the size of the window for the architecture
+        /// </summary>
+        /// <returns></returns>
         private Size GetArchitectureSize()
         {
             return new Size(
@@ -121,8 +126,32 @@ namespace SlideMeister
             foreach (var item in _machine.Items)
             {
                 var imageForItem = new Image();
-                _imagesForItems[item] = imageForItem;
                 BackgroundCanvas.Children.Add(imageForItem);
+
+
+                var button = new Button
+                {
+                    Content = $"{item.Name}: {item.CurrentState?.Name ?? "Not known"}"
+                };
+
+                var itemView = new ItemView
+                {
+                    Image = imageForItem,
+                    Item = item,
+                    StateButton = button
+                };
+
+                _items.Add(itemView);
+
+                button.Click += (x, y) =>
+                {
+                    OnStateButtonClick(itemView);
+                };
+
+
+
+                StateButtons.Children.Add(button);
+
             }
 
             UpdateStates();
@@ -130,17 +159,25 @@ namespace SlideMeister
             UpdatePositions();
         }
 
+        private void OnStateButtonClick(ItemView item)
+        {
+            item.Item.CurrentState = item.Item.Type.GetNextState(item.Item.CurrentState);
+            item.StateButton.Content = $"{item.Item.Name}: {item.Item.CurrentState}";
+            
+            UpdateStates();
+        }
+
         /// <summary>
         /// Updates all the images as given by the state of each item
         /// </summary>
         public void UpdateStates()
         {
-            foreach (var pair in _imagesForItems)
+            foreach (var pair in _items)
             {
-                var state = pair.Key.CurrentState;
+                var state = pair.Item.CurrentState;
                 if (_imagesForStates.TryGetValue(state, out BitmapImage source))
                 {
-                    pair.Value.Source = source;
+                    pair.Image.Source = source;
                 }
 
             }
@@ -161,18 +198,18 @@ namespace SlideMeister
             }
 
 
-            foreach (var pair in _imagesForItems)
+            foreach (var pair in _items)
             {
                 var rect = ScaleToRect(
-                    pair.Key.Position.X,
-                    pair.Key.Position.Y,
-                    pair.Key.Position.Width,
-                    pair.Key.Position.Height);
+                    pair.Item.Position.X,
+                    pair.Item.Position.Y,
+                    pair.Item.Position.Width,
+                    pair.Item.Position.Height);
 
-                Canvas.SetLeft(pair.Value, rect.Left);
-                Canvas.SetTop(pair.Value, rect.Top);
-                pair.Value.Width = rect.Width;
-                pair.Value.Height = rect.Height;
+                Canvas.SetLeft(pair.Image, rect.Left);
+                Canvas.SetTop(pair.Image, rect.Top);
+                pair.Image.Width = rect.Width;
+                pair.Image.Height = rect.Height;
             }
         }
 
@@ -188,12 +225,14 @@ namespace SlideMeister
 
             var firstLed = new OverlayItem(led)
             {
-                Position = new SlideMeisterLib.Model.Rectangle(0.4, 0.2, 0.2, 0.2)
+                Name = "Top",
+                Position = new SlideMeisterLib.Model.Rectangle(0.3, 0.1, 0.4, 0.4)
             };
 
             var secondLed = new OverlayItem(led)
             {
-                Position = new SlideMeisterLib.Model.Rectangle(0.4, 0.6, 0.2, 0.2),
+                Name = "Bottom",
+                Position = new SlideMeisterLib.Model.Rectangle(0.3, 0.5, 0.4, 0.4),
                 CurrentState = offState
             };
 

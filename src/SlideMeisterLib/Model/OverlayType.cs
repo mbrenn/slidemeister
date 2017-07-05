@@ -31,5 +31,16 @@ namespace SlideMeisterLib.Model
         {
             return $"{Name}";
         }
+
+        public OverlayState GetNextState(OverlayState itemCurrentState)
+        {
+            var pos = States.IndexOf(itemCurrentState);
+            if (pos == -1 || pos == States.Count - 1)
+            {
+                pos = -1;
+            }
+
+            return States[pos + 1];
+        }
     }
 }
