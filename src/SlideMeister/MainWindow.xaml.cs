@@ -2,18 +2,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using Microsoft.Win32;
 using SlideMeister.ViewModels;
+using SlideMeisterLib.Logic;
 
 namespace SlideMeister
 {
@@ -102,56 +96,65 @@ namespace SlideMeister
             );
         }
 
+        /// <summary>
+        /// Loads the images from the data
+        /// </summary>
         public void LoadImages()
         {
-            var path = System.IO.Path.Combine(Environment.CurrentDirectory, _machine.BackgroundImageUrl);
-            var bitmap = new BitmapImage(new Uri(path));
-            _ratioWidthToHeight = bitmap.Width / bitmap.Height;
-
-            var states = _machine.Items.SelectMany(x => x.Type.States).Distinct();
-            foreach (var state in states)
-            {
-                path = System.IO.Path.Combine(Environment.CurrentDirectory, state.ImageUrl);
-                var itemBitmap = new BitmapImage(new Uri(path));
-
-                _imagesForStates[state] = itemBitmap;
-            }
-
-
-            // Creates the actuatl imagesImages
+            // Removes the existing items
             BackgroundCanvas.Children.Clear();
-            _backgroundImage = new Image { Source = bitmap };
-            BackgroundCanvas.Children.Add(_backgroundImage);
+            _backgroundImage = null;
 
-            foreach (var item in _machine.Items)
+
+            if (!string.IsNullOrEmpty(_machine.BackgroundImageUrl))
             {
-                var imageForItem = new Image();
-                BackgroundCanvas.Children.Add(imageForItem);
+                var path = System.IO.Path.Combine(Environment.CurrentDirectory, _machine.BackgroundImageUrl);
+                var bitmap = new BitmapImage(new Uri(path));
+                _ratioWidthToHeight = bitmap.Width / bitmap.Height;
 
-
-                var button = new Button
+                var states = _machine.Items.SelectMany(x => x.Type.States).Distinct();
+                foreach (var state in states)
                 {
-                    Content = $"{item.Name}: {item.CurrentState?.Name ?? "Not known"}"
-                };
+                    path = System.IO.Path.Combine(Environment.CurrentDirectory, state.ImageUrl);
+                    var itemBitmap = new BitmapImage(new Uri(path));
 
-                var itemView = new ItemView
+                    _imagesForStates[state] = itemBitmap;
+                }
+
+
+                // Creates the actuatl imagesImages
+                _backgroundImage = new Image {Source = bitmap};
+                BackgroundCanvas.Children.Add(_backgroundImage);
+
+                foreach (var item in _machine.Items)
                 {
-                    Image = imageForItem,
-                    Item = item,
-                    StateButton = button
-                };
-
-                _items.Add(itemView);
-
-                button.Click += (x, y) =>
-                {
-                    OnStateButtonClick(itemView);
-                };
+                    var imageForItem = new Image();
+                    BackgroundCanvas.Children.Add(imageForItem);
 
 
+                    var button = new Button
+                    {
+                        Content = $"{item.Name}: {item.CurrentState?.Name ?? "Not known"}"
+                    };
 
-                StateButtons.Children.Add(button);
+                    var itemView = new ItemView
+                    {
+                        Image = imageForItem,
+                        Item = item,
+                        StateButton = button
+                    };
 
+                    _items.Add(itemView);
+
+                    button.Click += (x, y) =>
+                    {
+                        OnStateButtonClick(itemView);
+                    };
+
+
+
+                    StateButtons.Children.Add(button);
+                }
             }
 
             UpdateStates();
@@ -255,6 +258,33 @@ namespace SlideMeister
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             UpdatePositions();
+        }
+
+        private void Close_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
+
+        private void FileOpen_Click(object sender, RoutedEventArgs e)
+        {
+            var dlg = new OpenFileDialog
+            {
+                AddExtension = true,
+                CheckFileExists = true,
+                Filter = "SlideMeister Files |*.json;*.slidemeister"
+            };
+
+            if (dlg.ShowDialog(this) == true)
+            {
+                // Load file
+                using (var stream = dlg.OpenFile())
+                {
+                    _machine = Loader.LoadMachine(stream);
+                    LoadImages();
+
+                }
+                
+            }
         }
     }
 }

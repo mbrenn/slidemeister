@@ -1,0 +1,66 @@
+{
+  "name": "Two LEDs",
+  "version": "1.0",
+  "types": {
+    "LED": {
+      "states": {
+        "on": {
+          "image": "on.png"
+        },
+        "off": {
+          "image": "off.png"
+        }
+      }
+    }
+  },
+  "items": {
+    "Top": {
+      "x": 0.3,
+      "y": 0.1,
+      "width": 0.4,
+      "height": 0.4,
+      "type": "LED"
+    },
+    "Botton": {
+      "x": 0.3,
+      "y": 0.5,
+      "width": 0.4,
+      "height": 0.4,
+      "type": "LED"
+    }
+  },
+  "transitions": {
+    "To Red": {
+      "Top": "off",
+      "Bottom": "off"
+    },
+    "To Both": {
+      "Top": "off",
+      "Bottom": "on"
+    },
+    "To Green": {
+      "Top": "on",
+      "Bottom": "on"
+    }
+  },
+  "sequences": {
+    "FromRedToGreen": {
+      "steps": {
+        "Begin": {
+          "Transition": "To Red",
+          "Duration": 1
+        },
+        "GoingToYellow": {
+          "Transition": "To Both",
+          "Duration": 1
+        },
+        "NowGreen": {
+          "Transition": "To Green",
+          "Duration": 1
+        }
+      }
+    }
+  }
+}
+ 
+

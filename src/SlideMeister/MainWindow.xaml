@@ -7,16 +7,28 @@
         mc:Ignorable="d"
         Title="SlideMeister" Height="350" Width="525" SizeChanged="Window_SizeChanged">
     <Grid>
-       <Grid.ColumnDefinitions>
-           <ColumnDefinition Width="80*"></ColumnDefinition>
-           <ColumnDefinition Width="20*"></ColumnDefinition>
-        </Grid.ColumnDefinitions> 
-        <Canvas x:Name="BackgroundCanvas">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="80*"></ColumnDefinition>
+            <ColumnDefinition Width="20*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Menu Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
+            <MenuItem Header="_File">
+                <MenuItem Header="Open..." Click="FileOpen_Click"></MenuItem>
+                <Separator />
+                <MenuItem Header="Close" Click="Close_Click"></MenuItem>
+            </MenuItem>
+        </Menu>
+        <Canvas x:Name="BackgroundCanvas" Grid.Row="1" Grid.Column="0">
+            <Menu />
 
         </Canvas>
-        <StackPanel Grid.Column="1" Orientation="Vertical" x:Name="StateButtons"></StackPanel>
-            
-        
+        <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Vertical" x:Name="StateButtons"></StackPanel>
+
+
     </Grid>
-    
+
 </Window>
