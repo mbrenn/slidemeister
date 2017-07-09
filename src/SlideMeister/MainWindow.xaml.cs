@@ -59,7 +59,7 @@ namespace SlideMeister
 
             CreateMachine();
 
-            LoadImages();
+            CreateView();
         }
 
 
@@ -87,7 +87,6 @@ namespace SlideMeister
             var offsetY = (totalSize.Height - newHeight) / 2;
 
 
-
             return new Rect(
                 newWidth * x + offsetX,
                 newHeight * y + offsetY,
@@ -99,10 +98,15 @@ namespace SlideMeister
         /// <summary>
         /// Loads the images from the data
         /// </summary>
-        public void LoadImages()
+        public void CreateView()
         {
-            // Removes the existing items
+            StateButtons.Children.Clear();
             BackgroundCanvas.Children.Clear();
+            _imagesForStates.Clear();
+            _items.Clear();
+            Title = $"SlideMeister - {_machine.Name} - {_machine.Version}";
+
+            // Removes the existing items
             _backgroundImage = null;
 
 
@@ -218,7 +222,12 @@ namespace SlideMeister
 
         public void CreateMachine()
         {
-            _machine = new Machine {BackgroundImageUrl = "examples/leds/leds.png"};
+            _machine = new Machine
+                {
+                    BackgroundImageUrl = "examples/leds/leds.png",
+                    Name = "Two LEDs Preloaded",
+                    Version= "0.1"
+                };
 
             var led = new OverlayType("LED");
             var onState = new OverlayState("On", "examples/leds/on.png");
@@ -277,13 +286,8 @@ namespace SlideMeister
             if (dlg.ShowDialog(this) == true)
             {
                 // Load file
-                using (var stream = dlg.OpenFile())
-                {
-                    _machine = Loader.LoadMachine(stream);
-                    LoadImages();
-
-                }
-                
+                _machine = Loader.LoadMachine(dlg.FileName);
+                CreateView();
             }
         }
     }

@@ -1,6 +1,7 @@
 {
   "name": "Two LEDs",
   "version": "1.0",
+  "backgroundImage":  "leds.png",
   "types": {
     "LED": {
       "states": {
@@ -14,14 +15,15 @@
     }
   },
   "items": {
-    "Top": {
+    "First": {
       "x": 0.3,
       "y": 0.1,
       "width": 0.4,
       "height": 0.4,
-      "type": "LED"
+      "type": "LED",
+      "defaultState": "off" 
     },
-    "Botton": {
+    "Second": {
       "x": 0.3,
       "y": 0.5,
       "width": 0.4,
