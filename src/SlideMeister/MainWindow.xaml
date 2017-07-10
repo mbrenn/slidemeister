@@ -18,6 +18,11 @@
                 <Separator />
                 <MenuItem Header="Close" Click="Close_Click"></MenuItem>
             </MenuItem>
+            <MenuItem Header="_Image">
+                <MenuItem Header="Save Image..." Click="SaveImage_OnClick"></MenuItem>
+                <MenuItem Header="Save all Sequences..." Click="SaveSequences_OnClick">
+                </MenuItem>
+            </MenuItem>
         </Menu>
         <Canvas x:Name="BackgroundCanvas" Grid.Row="1" Grid.Column="0">
         </Canvas>

@@ -1,9 +1,11 @@
 ﻿using SlideMeisterLib.Model;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Microsoft.Win32;
 using SlideMeister.ViewModels;
@@ -115,7 +117,8 @@ namespace SlideMeister
             // Removes the existing items
             _backgroundImage = null;
 
-
+            var dict = new Dictionary<OverlayItem, Image>();
+            
             if (!string.IsNullOrEmpty(_machine.BackgroundImageUrl))
             {
                 var path = System.IO.Path.Combine(Environment.CurrentDirectory, _machine.BackgroundImageUrl);
@@ -140,8 +143,12 @@ namespace SlideMeister
                 {
                     var imageForItem = new Image();
                     BackgroundCanvas.Children.Add(imageForItem);
+                    dict[item] = imageForItem;
+                }
 
 
+                foreach (var item in _machine.Items)
+                {
                     var button = new Button
                     {
                         Content = $"{item.Name}: {item.CurrentState?.Name ?? "Not known"}"
@@ -149,27 +156,21 @@ namespace SlideMeister
 
                     var itemView = new ItemView
                     {
-                        Image = imageForItem,
+                        Image = dict[item],
                         Item = item,
                         StateButton = button
                     };
-
-                    _items.Add(itemView);
 
                     button.Click += (x, y) =>
                     {
                         OnStateButtonClick(itemView);
                     };
 
-
+                    _items.Add(itemView);
 
                     StateButtons.Children.Add(button);
                 }
             }
-
-            UpdateStates();
-
-            UpdatePositions();
 
 
             // Creates the buttons for the transition
@@ -257,6 +258,10 @@ namespace SlideMeister
                 SequenceButtons.Children.Add(nextButton);
                 n++;
             }
+
+            UpdateStates();
+
+            UpdatePositions();
         }
 
         private void OnStateButtonClick(ItemView item)
@@ -339,7 +344,7 @@ namespace SlideMeister
             {
                 AddExtension = true,
                 CheckFileExists = true,
-                Filter = "SlideMeister Files |*.json;*.slidemeister"
+                Filter = "SlideMeister Files (*.json, *.slidemeister) |*.json;*.slidemeister"
             };
 
             if (dlg.ShowDialog(this) == true)
@@ -347,6 +352,98 @@ namespace SlideMeister
                 // Load file
                 _machine = Loader.LoadMachine(dlg.FileName);
                 CreateView();
+            }
+        }
+
+        private void SaveImage_OnClick(object sender, RoutedEventArgs e)
+        {
+            var dlg = new SaveFileDialog
+            {
+                AddExtension = true,
+                Filter = "PNG-File (*.png)|*.png;*.slidemeister"
+            };
+
+            if (dlg.ShowDialog(this) == true)
+            {
+                // Load file
+                var visual = new Canvas
+                {
+                    Width = 1024,
+                    Height = 768
+                };
+
+                SaveToPng(BackgroundCanvas, dlg.FileName);
+                
+            }
+        }
+
+        private void SaveSequences_OnClick(object sender, RoutedEventArgs e)
+        {
+            var dlg = new SaveFileDialog
+            {
+                AddExtension = true,
+                Filter = "PNG-File (*.png)|*.png;*.slidemeister"
+            };
+
+
+            if (dlg.ShowDialog(this) == true)
+            {
+                // Load file
+                var visual = new Canvas
+                {
+                    Width = 1024,
+                    Height = 768
+                };
+
+                foreach (var sequence in _machine.Sequences)
+                {
+                    var navigation = new TransitionNavigation(_machine, sequence);
+                    navigation.Initialize();
+
+                    var directory = Path.GetDirectoryName(dlg.FileName);
+
+                    do
+                    {
+                        UpdateStates();
+
+                        BackgroundCanvas.Measure(new Size(Double.PositiveInfinity, Double.PositiveInfinity));
+                        BackgroundCanvas.Arrange(new Rect(BackgroundCanvas.RenderSize));
+
+                        SaveToPng(
+                            BackgroundCanvas,
+                            Path.Combine(
+                                directory ?? ".",
+                                $"{sequence.Name} - {navigation.CurrentStep.Transitions.Name}.png"));
+
+
+                        if (!navigation.NavigateToNext())
+                        {
+                            break;
+                        }
+                    } while (true);
+                }
+            }
+        }
+
+        void SaveToPng(FrameworkElement visual, string fileName)
+        {
+            var encoder = new PngBitmapEncoder();
+            SaveUsingEncoder(visual, fileName, encoder);
+        }
+
+        // and so on for other encoders (if you want)
+
+
+        void SaveUsingEncoder(FrameworkElement visual, string fileName, BitmapEncoder encoder)
+        {
+            RenderTargetBitmap bitmap = new RenderTargetBitmap((int)visual.ActualWidth, (int)visual.ActualHeight, 96, 96, PixelFormats.Pbgra32);
+            bitmap.Render(visual);
+            BitmapFrame frame = BitmapFrame.Create(bitmap);
+            encoder.Frames.Add(frame);
+
+            using (var stream = File.Create(fileName))
+            {
+                encoder.Save(stream);
             }
         }
     }
