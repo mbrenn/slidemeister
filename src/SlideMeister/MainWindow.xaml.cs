@@ -191,14 +191,71 @@ namespace SlideMeister
 
 
             // Creates the buttons for the transition
+            var n = 0;
             foreach (var sequence in _machine.Sequences)
             {
-                var button = new Button
-                {
-                    Content = sequence.Name
-                };
+                SequenceButtons.RowDefinitions.Add(new RowDefinition());
 
-                SequenceButtons.Children.Add(button);
+                var navigation = new TransitionNavigation(_machine, sequence);
+
+                var title = new StackPanel()
+                {
+                    Orientation = Orientation.Vertical,
+                    VerticalAlignment = VerticalAlignment.Center
+                };
+                var titleText = new TextBlock {Text = sequence.Name};
+                var stateText = new TextBlock {Text = string.Empty};
+                title.Children.Add(titleText);
+                title.Children.Add(stateText);
+
+                Grid.SetRow(title, n);
+                Grid.SetColumn(title, 0);
+
+                var initButton = new Button
+                {
+                    Content = "Initialize"
+                };
+                initButton.Click += (x, y) =>
+                {
+                    navigation.Initialize();
+                    stateText.Text = navigation.CurrentStep.Transitions.Name;
+                    UpdateStates();
+                };
+                Grid.SetRow(initButton, n);
+                Grid.SetColumn(initButton, 1);
+
+                var prevButton = new Button
+                {
+                    Content = "Previous"
+                };
+                prevButton.Click += (x, y) =>
+                {
+                    navigation.NavigateToPrevious();
+                    stateText.Text = navigation.CurrentStep.Transitions.Name;
+                    UpdateStates();
+                };
+                Grid.SetRow(prevButton, n);
+                Grid.SetColumn(prevButton, 2);
+
+
+                var nextButton = new Button
+                {
+                    Content = "Next"
+                };
+                nextButton.Click += (x, y) =>
+                {
+                    navigation.NavigateToNext();
+                    stateText.Text = navigation.CurrentStep.Transitions.Name;
+                    UpdateStates();
+                };
+                Grid.SetRow(nextButton, n);
+                Grid.SetColumn(nextButton, 3);
+
+                SequenceButtons.Children.Add(title);
+                SequenceButtons.Children.Add(initButton);
+                SequenceButtons.Children.Add(prevButton);
+                SequenceButtons.Children.Add(nextButton);
+                n++;
             }
         }
 

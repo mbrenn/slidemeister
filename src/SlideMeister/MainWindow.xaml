@@ -24,15 +24,28 @@
         <TabControl Grid.Row="2" Grid.Column="0" >
             <TabItem>
                 <TabItem.Header>States</TabItem.Header>
-                <StackPanel Orientation="Vertical" x:Name="StateButtons"></StackPanel>
+                <ScrollViewer>
+                    <StackPanel Orientation="Vertical" x:Name="StateButtons"></StackPanel>
+                </ScrollViewer>
             </TabItem>
             <TabItem>
                 <TabItem.Header>Transitions</TabItem.Header>
-                <StackPanel Orientation="Vertical" x:Name="TransitionButtons"></StackPanel>
+                <ScrollViewer>
+                    <StackPanel Orientation="Vertical" x:Name="TransitionButtons"></StackPanel>
+                </ScrollViewer>
             </TabItem>
             <TabItem>
                 <TabItem.Header>Sequences</TabItem.Header>
-                <StackPanel Orientation="Vertical" x:Name="SequenceButtons"></StackPanel>
+                <ScrollViewer>
+                    <Grid x:Name="SequenceButtons" VerticalAlignment="Top">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition></ColumnDefinition>
+                            <ColumnDefinition></ColumnDefinition>
+                            <ColumnDefinition></ColumnDefinition>
+                            <ColumnDefinition></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                    </Grid>
+                </ScrollViewer>
             </TabItem>
         </TabControl>
     </Grid>

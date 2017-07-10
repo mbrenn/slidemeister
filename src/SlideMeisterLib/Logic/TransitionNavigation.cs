@@ -68,15 +68,21 @@ namespace SlideMeisterLib.Logic
             var pos = _sequence.Steps.IndexOf(CurrentStep);
             if (pos == -1)
             {
-                throw new InvalidOperationException("The current step is not available");
+                pos = 0;
             }
-
-            if (pos >= _sequence.Steps.Count - 1)
+            else
             {
-                return;
+
+                if (pos >= _sequence.Steps.Count - 1)
+                {
+                    return;
+                }
+
+                pos++;
             }
 
-            CurrentStep = _sequence.Steps[pos + 1];
+
+            CurrentStep = _sequence.Steps[pos];
             _machineLogic.ApplyTransition(CurrentStep.Transitions);
         }
 
@@ -89,15 +95,19 @@ namespace SlideMeisterLib.Logic
             var pos = _sequence.Steps.IndexOf(CurrentStep);
             if (pos == -1)
             {
-                throw new InvalidOperationException("The current step is not available");
+                pos = 0;
             }
-
-            if (pos <= 0)
+            else
             {
-                return;
+                if (pos <= 0)
+                {
+                    return;
+                }
+
+                pos--;
             }
 
-            CurrentStep = _sequence.Steps[pos - 1];
+            CurrentStep = _sequence.Steps[pos];
             _machineLogic.ApplyTransition(CurrentStep.Transitions);
 
         }
