@@ -57,7 +57,7 @@ namespace SlideMeister
         {
             InitializeComponent();
 
-            CreateMachine();
+            _machine = Example.CreateMachine();
 
             CreateView();
         }
@@ -100,6 +100,12 @@ namespace SlideMeister
         /// </summary>
         public void CreateView()
         {
+            // If machine is null, creates the view
+            if (_machine == null)
+            {
+                return;
+            }
+
             StateButtons.Children.Clear();
             BackgroundCanvas.Children.Clear();
             _imagesForStates.Clear();
@@ -164,14 +170,44 @@ namespace SlideMeister
             UpdateStates();
 
             UpdatePositions();
+
+
+            // Creates the buttons for the transition
+            foreach (var transition in _machine.Transitions)
+            {
+                var button = new Button
+                {
+                    Content = transition.Name
+                };
+                button.Click += (x, y) =>
+                {
+                    var logic = new MachineLogic(_machine);
+                    logic.ApplyTransition(transition);
+                    UpdateStates();
+                };
+
+                TransitionButtons.Children.Add(button);
+            }
+
+
+            // Creates the buttons for the transition
+            foreach (var sequence in _machine.Sequences)
+            {
+                var button = new Button
+                {
+                    Content = sequence.Name
+                };
+
+                SequenceButtons.Children.Add(button);
+            }
         }
 
         private void OnStateButtonClick(ItemView item)
         {
             item.Item.CurrentState = item.Item.Type.GetNextState(item.Item.CurrentState);
-            item.StateButton.Content = $"{item.Item.Name}: {item.Item.CurrentState}";
+
             
-            UpdateStates();
+            UpdateState(item);
         }
 
         /// <summary>
@@ -181,13 +217,23 @@ namespace SlideMeister
         {
             foreach (var pair in _items)
             {
-                var state = pair.Item.CurrentState;
-                if (_imagesForStates.TryGetValue(state, out BitmapImage source))
-                {
-                    pair.Image.Source = source;
-                }
-
+                UpdateState(pair);
             }
+        }
+
+        /// <summary>
+        /// Updates the state and the button text
+        /// </summary>
+        /// <param name="pair">Pair to be updated</param>
+        private void UpdateState(ItemView pair)
+        {
+            var state = pair.Item.CurrentState;
+            if (_imagesForStates.TryGetValue(state, out BitmapImage source))
+            {
+                pair.Image.Source = source;
+            }
+
+            pair.StateButton.Content = $"{pair.Item.Name}: {pair.Item.CurrentState}";
         }
 
         /// <summary>
@@ -218,52 +264,6 @@ namespace SlideMeister
                 pair.Image.Width = rect.Width;
                 pair.Image.Height = rect.Height;
             }
-        }
-
-        public void CreateMachine()
-        {
-            _machine = new Machine
-                {
-                    BackgroundImageUrl = "examples/leds/leds.png",
-                    Name = "Two LEDs Preloaded",
-                    Version= "0.1"
-                };
-
-            var led = new OverlayType("LED");
-            var onState = new OverlayState("On", "examples/leds/on.png");
-            var offState = new OverlayState("Off", "examples/leds/off.png");
-            led.AddState(onState);
-            led.AddState(offState);
-
-            var firstLed = new OverlayItem(led)
-            {
-                Name = "Top",
-                Position = new SlideMeisterLib.Model.Rectangle(0.3, 0.1, 0.4, 0.4)
-            };
-
-            var secondLed = new OverlayItem(led)
-            {
-                Name = "Bottom",
-                Position = new SlideMeisterLib.Model.Rectangle(0.3, 0.5, 0.4, 0.4),
-                CurrentState = offState
-            };
-
-            _machine.AddItem(firstLed);
-            _machine.AddItem(secondLed);
-
-            var sequence = new TransitionSequence();
-            sequence.Steps.Add(
-                new TransitionSequenceStep(
-                    "Top",
-                    new Transition(firstLed, onState),
-                    new Transition(secondLed, offState)));
-            sequence.Steps.Add(
-                new TransitionSequenceStep(
-                    "Bottom",
-                    new Transition(firstLed, offState),
-                    new Transition(secondLed, onState)));
-
-            _machine.Sequences.Add(sequence);
         }
 
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)

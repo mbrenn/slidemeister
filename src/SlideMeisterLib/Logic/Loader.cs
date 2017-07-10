@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using SlideMeisterLib.Model;
 
@@ -52,11 +51,13 @@ namespace SlideMeisterLib.Logic
             LoadItems(machineObject);
             LoadTransitions(machineObject);
             LoadSequences(machineObject);
-
-
             return _machine;
         }
 
+        /// <summary>
+        /// Loads the values from the root of the json object
+        /// </summary>
+        /// <param name="machineObject">The machine object as Json</param>
         private void LoadMachineValues(JObject machineObject)
         {
             if (machineObject.TryGetValue("name", out JToken nameValue))
@@ -81,7 +82,7 @@ namespace SlideMeisterLib.Logic
         /// <summary>
         /// Loads the types from the given machine object
         /// </summary>
-        /// <param name="machineObject">The machine object</param>
+        /// <param name="machineObject">The machine object as Json</param>
         private void LoadTypes(JObject machineObject)
         {
             // Loads the types
@@ -126,7 +127,7 @@ namespace SlideMeisterLib.Logic
         /// <summary>
         /// Loads the items from the given machine object
         /// </summary>
-        /// <param name="machineObject">The machine object</param>
+        /// <param name="machineObject">The machine object as Json</param>
         private void LoadItems(JObject machineObject)
         {
             if (machineObject.TryGetValue("items", out JToken itemsToken))
@@ -179,7 +180,7 @@ namespace SlideMeisterLib.Logic
         /// <summary>
         /// Loads the transition from the file
         /// </summary>
-        /// <param name="machineObject">The machine object</param>
+        /// <param name="machineObject">The machine object as Json</param>
         private void LoadTransitions(JObject machineObject)
         {
             if (machineObject.TryGetValue("transitions", out JToken transitionToken))
@@ -222,7 +223,7 @@ namespace SlideMeisterLib.Logic
         /// <summary>
         /// Loads the sequences from the file
         /// </summary>
-        /// <param name="machineObject">The machine object</param>
+        /// <param name="machineObject">The machine object as Json</param>
         private void LoadSequences(JObject machineObject)
         {
             if (machineObject.TryGetValue("sequences", out JToken sequenceToken))

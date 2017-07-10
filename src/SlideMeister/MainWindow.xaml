@@ -9,13 +9,10 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition></RowDefinition>
+            <RowDefinition Height="70*"></RowDefinition>
+            <RowDefinition Height="30*"></RowDefinition>
         </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="80*"></ColumnDefinition>
-            <ColumnDefinition Width="20*"></ColumnDefinition>
-        </Grid.ColumnDefinitions>
-        <Menu Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
+        <Menu Grid.Row="0" Grid.Column="0">
             <MenuItem Header="_File">
                 <MenuItem Header="Open..." Click="FileOpen_Click"></MenuItem>
                 <Separator />
@@ -23,12 +20,20 @@
             </MenuItem>
         </Menu>
         <Canvas x:Name="BackgroundCanvas" Grid.Row="1" Grid.Column="0">
-            <Menu />
-
         </Canvas>
-        <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Vertical" x:Name="StateButtons"></StackPanel>
-
-
+        <TabControl Grid.Row="2" Grid.Column="0" >
+            <TabItem>
+                <TabItem.Header>States</TabItem.Header>
+                <StackPanel Orientation="Vertical" x:Name="StateButtons"></StackPanel>
+            </TabItem>
+            <TabItem>
+                <TabItem.Header>Transitions</TabItem.Header>
+                <StackPanel Orientation="Vertical" x:Name="TransitionButtons"></StackPanel>
+            </TabItem>
+            <TabItem>
+                <TabItem.Header>Sequences</TabItem.Header>
+                <StackPanel Orientation="Vertical" x:Name="SequenceButtons"></StackPanel>
+            </TabItem>
+        </TabControl>
     </Grid>
-
 </Window>
