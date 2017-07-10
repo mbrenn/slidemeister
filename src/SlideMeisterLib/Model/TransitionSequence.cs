@@ -13,5 +13,14 @@ namespace SlideMeisterLib.Model
         {
             return Name;
         }
+
+        public TransitionSequence()
+        {
+        }
+
+        public TransitionSequence(string name)
+        {
+            Name = name;
+        }
     }
 }

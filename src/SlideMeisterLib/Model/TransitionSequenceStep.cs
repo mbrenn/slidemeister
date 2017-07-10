@@ -24,15 +24,15 @@ namespace SlideMeisterLib.Model
             Duration = duration;
         }
 
-        public TransitionSequenceStep(params Transition[] transition)
+        public TransitionSequenceStep(string name, params Transition[] transition)
         {
-            Transitions = new TransitionSet(transition);
+            Transitions = new TransitionSet(name, transition);
         }
 
-        public TransitionSequenceStep(TimeSpan duration, params Transition[] transition)
+        public TransitionSequenceStep(string name, TimeSpan duration, params Transition[] transition)
         {
             Duration = duration;
-            Transitions = new TransitionSet(transition);
+            Transitions = new TransitionSet(name, transition);
         }
 
         public TransitionSequenceStep(TimeSpan duration, TransitionSet set)

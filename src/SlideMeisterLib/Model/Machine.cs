@@ -23,6 +23,8 @@ namespace SlideMeisterLib.Model
 
         public List<TransitionSequence> Sequences { get; set; } = new List<TransitionSequence>();
 
+        public List<TransitionSet> Transitions { get; set; } = new List<TransitionSet>();
+
         public void AddItem(OverlayItem item)
         {
             Items.Add(item);

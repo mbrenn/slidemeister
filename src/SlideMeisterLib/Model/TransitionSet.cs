@@ -18,9 +18,11 @@ namespace SlideMeisterLib.Model
         /// <summary>
         /// Initializes a new instance of the TransitionSet
         /// </summary>
+        /// <param name="name">Name of the transition set</param>
         /// <param name="transitions">Array for transitions</param>
-        public TransitionSet(params Transition[] transitions)
+        public TransitionSet(string name, params Transition[] transitions)
         {
+            Name = name;
             foreach (var transition in transitions)
             {
                 Transitions.Add(transition);

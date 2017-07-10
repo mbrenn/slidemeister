@@ -254,10 +254,12 @@ namespace SlideMeister
             var sequence = new TransitionSequence();
             sequence.Steps.Add(
                 new TransitionSequenceStep(
+                    "Top",
                     new Transition(firstLed, onState),
                     new Transition(secondLed, offState)));
             sequence.Steps.Add(
                 new TransitionSequenceStep(
+                    "Bottom",
                     new Transition(firstLed, offState),
                     new Transition(secondLed, onState)));
 

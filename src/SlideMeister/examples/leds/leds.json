@@ -33,32 +33,32 @@
   },
   "transitions": {
     "To Red": {
-      "Top": "off",
-      "Bottom": "off"
+      "First": "off",
+      "Second": "off"
     },
     "To Both": {
-      "Top": "off",
-      "Bottom": "on"
+      "First": "off",
+      "Second": "on"
     },
     "To Green": {
-      "Top": "on",
-      "Bottom": "on"
+      "First": "on",
+      "Second": "on"
     }
   },
   "sequences": {
     "FromRedToGreen": {
       "steps": {
         "Begin": {
-          "Transition": "To Red",
-          "Duration": 1
+          "transition": "To Red",
+          "duration": 1
         },
         "GoingToYellow": {
-          "Transition": "To Both",
-          "Duration": 1
+          "transition": "To Both",
+          "duration": 1
         },
         "NowGreen": {
-          "Transition": "To Green",
-          "Duration": 1
+          "transition": "To Green",
+          "duration": 1
         }
       }
     }
