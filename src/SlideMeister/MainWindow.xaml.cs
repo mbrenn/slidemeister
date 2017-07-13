@@ -1,6 +1,7 @@
 ﻿using System;
 using SlideMeisterLib.Model;
 using System.IO;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -208,14 +209,24 @@ namespace SlideMeister
 
             if (dlg.ShowDialog(this) == true)
             {
+                var size = new Size(1024, 768);
                 // Load file
-                var visual = new SlideControl()
+
+                var slideControl = new SlideControl
                 {
-                    Width = 1024,
-                    Height = 768
+                    Width = size.Width,
+                    Height = size.Height,
+                    Machine = Machine
                 };
 
-                SaveToPng(SlideCanvas, dlg.FileName);
+
+                slideControl.Measure(size);
+                slideControl.Arrange(new Rect(size));
+                slideControl.CreateView();
+                slideControl.BackgroundCanvas.Measure(size);
+                slideControl.BackgroundCanvas.Arrange(new Rect(size));
+
+                SaveToPng(slideControl, dlg.FileName);
                 
             }
         }
@@ -247,10 +258,25 @@ namespace SlideMeister
 
                     do
                     {
-                        SlideCanvas.UpdateStates();
+                        var size = new Size(1024, 768);
+                        // Load file
+
+                        var slideControl = new SlideControl
+                        {
+                            Width = size.Width,
+                            Height = size.Height,
+                            Machine = Machine
+                        };
+
+
+                        slideControl.Measure(size);
+                        slideControl.Arrange(new Rect(size));
+                        slideControl.CreateView();
+                        slideControl.BackgroundCanvas.Measure(size);
+                        slideControl.BackgroundCanvas.Arrange(new Rect(size));
 
                         SaveToPng(
-                            SlideCanvas,
+                            slideControl,
                             Path.Combine(
                                 directory ?? ".",
                                 $"{sequence.Name} - {navigation.CurrentStep.Transitions.Name}.png"));
