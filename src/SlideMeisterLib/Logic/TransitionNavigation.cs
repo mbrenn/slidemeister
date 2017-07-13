@@ -63,7 +63,7 @@ namespace SlideMeisterLib.Logic
         /// <summary>
         /// Sets the next step
         /// </summary>
-        public void NavigateToNext()
+        public bool NavigateToNext()
         {
             var pos = _sequence.Steps.IndexOf(CurrentStep);
             if (pos == -1)
@@ -75,7 +75,7 @@ namespace SlideMeisterLib.Logic
 
                 if (pos >= _sequence.Steps.Count - 1)
                 {
-                    return;
+                    return false;
                 }
 
                 pos++;
@@ -84,13 +84,15 @@ namespace SlideMeisterLib.Logic
 
             CurrentStep = _sequence.Steps[pos];
             _machineLogic.ApplyTransition(CurrentStep.Transitions);
+
+            return true;
         }
 
 
         /// <summary>
         /// Sets the previous step
         /// </summary>
-        public void NavigateToPrevious()
+        public bool NavigateToPrevious()
         {
             var pos = _sequence.Steps.IndexOf(CurrentStep);
             if (pos == -1)
@@ -101,7 +103,7 @@ namespace SlideMeisterLib.Logic
             {
                 if (pos <= 0)
                 {
-                    return;
+                    return false;
                 }
 
                 pos--;
@@ -109,6 +111,8 @@ namespace SlideMeisterLib.Logic
 
             CurrentStep = _sequence.Steps[pos];
             _machineLogic.ApplyTransition(CurrentStep.Transitions);
+
+            return true;
 
         }
     }

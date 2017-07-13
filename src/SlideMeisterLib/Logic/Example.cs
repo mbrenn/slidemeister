@@ -39,7 +39,7 @@ namespace SlideMeisterLib.Logic
             machine.AddItem(firstLed);
             machine.AddItem(secondLed);
 
-            var sequence = new TransitionSequence();
+            var sequence = new TransitionSequence("Traffic Light");
             sequence.Steps.Add(
                 new TransitionSequenceStep(
                     "Top",
@@ -52,6 +52,12 @@ namespace SlideMeisterLib.Logic
                     new Transition(secondLed, onState)));
 
             machine.Sequences.Add(sequence);
+
+            foreach (var step in sequence.Steps)
+            {
+                machine.Transitions.Add(step.Transitions);
+            }
+
             return machine;
         }
     }
