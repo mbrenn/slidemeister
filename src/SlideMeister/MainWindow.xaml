@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SlideMeister"
         mc:Ignorable="d"
-        Title="SlideMeister" Height="700" Width="900">
+        Title="SlideMeister" Height="700" Width="900" WindowStartupLocation="CenterScreen">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>

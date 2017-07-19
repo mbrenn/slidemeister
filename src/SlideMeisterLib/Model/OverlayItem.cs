@@ -14,6 +14,11 @@
         public OverlayState CurrentState { get; set; }
 
         /// <summary>
+        /// Defines the rotation of the elements
+        /// </summary>
+        public double Rotation { get; set; }
+
+        /// <summary>
         /// Initializes a new instance of the OverlayItem
         /// </summary>
         /// <param name="type"></param>

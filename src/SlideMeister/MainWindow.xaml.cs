@@ -4,12 +4,17 @@ using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Forms;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using Microsoft.Win32;
 using SlideMeister.Control;
 using SlideMeister.ViewModels;
 using SlideMeisterLib.Logic;
+using Button = System.Windows.Controls.Button;
+using MessageBox = System.Windows.MessageBox;
+using OpenFileDialog = Microsoft.Win32.OpenFileDialog;
+using Orientation = System.Windows.Controls.Orientation;
+using SaveFileDialog = Microsoft.Win32.SaveFileDialog;
 
 namespace SlideMeister
 {
@@ -227,34 +232,22 @@ namespace SlideMeister
                 slideControl.BackgroundCanvas.Arrange(new Rect(size));
 
                 SaveToPng(slideControl, dlg.FileName);
-                
             }
         }
 
         private void SaveSequences_OnClick(object sender, RoutedEventArgs e)
         {
-            var dlg = new SaveFileDialog
+            var dlg = new FolderBrowserDialog();
+
+
+            if (dlg.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
-                AddExtension = true,
-                Filter = "PNG-File (*.png)|*.png;*.slidemeister"
-            };
-
-
-            if (dlg.ShowDialog(this) == true)
-            {
-                // Load file
-                var visual = new SlideControl
-                {
-                    Width = 1024,
-                    Height = 768
-                };
-
                 foreach (var sequence in Machine.Sequences)
                 {
                     var navigation = new TransitionNavigation(Machine, sequence);
                     navigation.Initialize();
 
-                    var directory = Path.GetDirectoryName(dlg.FileName);
+                    var directory = dlg.SelectedPath;
 
                     do
                     {
@@ -267,7 +260,6 @@ namespace SlideMeister
                             Height = size.Height,
                             Machine = Machine
                         };
-
 
                         slideControl.Measure(size);
                         slideControl.Arrange(new Rect(size));
@@ -286,6 +278,7 @@ namespace SlideMeister
                         {
                             break;
                         }
+
                     } while (true);
                 }
             }

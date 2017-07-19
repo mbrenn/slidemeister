@@ -165,6 +165,12 @@ namespace SlideMeisterLib.Logic
                             Convert.ToDouble(yValue, CultureInfo.InvariantCulture),
                             Convert.ToDouble(widthValue, CultureInfo.InvariantCulture),
                             Convert.ToDouble(heightValue, CultureInfo.InvariantCulture));
+
+                    if (itemValue.TryGetValue("rotation", out JToken rotation))
+                    {
+                        item.Rotation = Convert.ToDouble(rotation, CultureInfo.InvariantCulture);
+                    }
+
                     if (itemValue.TryGetValue("defaultState", out JToken defaultStateValue))
                     {
                         item.CurrentState = item.Type.States.First(x => x.Name == defaultStateValue.ToString());

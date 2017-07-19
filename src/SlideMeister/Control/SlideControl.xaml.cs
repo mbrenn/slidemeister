@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using SlideMeister.ViewModels;
 using SlideMeisterLib.Model;
@@ -87,21 +88,20 @@ namespace SlideMeister.Control
         }
 
         /// <summary>
-        /// Updates the state and the button text
+        /// Makes and scales the actual size to fit into the surrounding box
         /// </summary>
-        /// <param name="itemView">Pair to be updated</param>
-        public void UpdateState(ItemView itemView)
+        /// <param name="surroundingBox">The surrounding box</param>
+        /// <param name="actualSize">The size of the element that needs to fit into the surrounding box</param>
+        /// <returns>The scaled size</returns>
+        public static Size ScaleSize(Size surroundingBox, Size actualSize)
         {
-            var state = itemView.Item.CurrentState;
-            if (_imagesForStates.TryGetValue(state, out BitmapImage source))
-            {
-                itemView.Image.Source = source;
-            }
+            var scale = Math.Min(
+                surroundingBox.Width / actualSize.Width,
+                surroundingBox.Height / actualSize.Height);
 
-            if (itemView.StateButton != null)
-            {
-                itemView.StateButton.Content = $"{itemView.Item.Name}: {itemView.Item.CurrentState}";
-            }
+            return new Size(
+                actualSize.Width * scale,
+                actualSize.Height * scale);
         }
 
         /// <summary>
@@ -146,21 +146,25 @@ namespace SlideMeister.Control
 
                 foreach (var item in Machine.Items)
                 {
+                    var border = new Border()
+                    {
+                        BorderThickness = new Thickness(0.0),
+                        BorderBrush = Brushes.Red
+                    };
+
                     var imageForItem = new Image();
-                    BackgroundCanvas.Children.Add(imageForItem);
+                    border.Child = imageForItem;
+
+                    BackgroundCanvas.Children.Add(border);
                     dict[item] = imageForItem;
-                }
 
-
-                foreach (var item in Machine.Items)
-                {
 
                     var itemView = new ItemView
                     {
-                        Image = dict[item],
-                        Item = item
+                        Item = item,
+                        UiElement = border,
+                        Image = imageForItem
                     };
-
                     ItemViews.Add(itemView);
                 }
             }
@@ -178,6 +182,24 @@ namespace SlideMeister.Control
             foreach (var pair in ItemViews)
             {
                 UpdateState(pair);
+            }
+        }
+
+        /// <summary>
+        /// Updates the state and the button text
+        /// </summary>
+        /// <param name="itemView">Pair to be updated</param>
+        public void UpdateState(ItemView itemView)
+        {
+            var state = itemView.Item.CurrentState;
+            if (_imagesForStates.TryGetValue(state, out BitmapImage source))
+            {
+                itemView.Image.Source = source;
+            }
+
+            if (itemView.StateButton != null)
+            {
+                itemView.StateButton.Content = $"{itemView.Item.Name}: {itemView.Item.CurrentState}";
             }
         }
 
@@ -204,10 +226,22 @@ namespace SlideMeister.Control
                     pair.Item.Position.Width,
                     pair.Item.Position.Height);
 
-                Canvas.SetLeft(pair.Image, rect.Left);
-                Canvas.SetTop(pair.Image, rect.Top);
+                Canvas.SetLeft(pair.UiElement, rect.Left);
+                Canvas.SetTop(pair.UiElement, rect.Top);
                 pair.Image.Width = rect.Width;
                 pair.Image.Height = rect.Height;
+                pair.Image.HorizontalAlignment = HorizontalAlignment.Center;
+                pair.Image.VerticalAlignment = VerticalAlignment.Center;
+
+                var size = ScaleSize(
+                    new Size(pair.Image.Width, pair.Image.Height),
+                    new Size(pair.Image.Source.Width, pair.Image.Source.Height));
+
+
+                pair.Image.RenderTransform = new RotateTransform(
+                    pair.Item.Rotation,
+                    size.Width / 2,
+                    size.Height / 2);
             }
         }
 

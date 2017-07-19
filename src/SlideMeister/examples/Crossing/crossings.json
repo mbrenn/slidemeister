@@ -1,0 +1,94 @@
+{
+  "name": "The Crossing",
+  "version": "1.0",
+  "backgroundImage":  "Crossing.png",
+  "types": {
+    "Light": {
+      "states": {
+        "red": {
+          "image": "RedLight.png"
+        },
+        "yellow": {
+          "image": "YellowLight.png"
+        },
+        "green": {
+          "image": "GreenLight.png"
+        },
+        "redyellow": {
+          "image": "RedYellowLight.png"
+        }
+      }
+    }
+  },
+  "items": {
+    "North": {
+      "x": 0.3,
+      "y": 0.25,
+      "width": 0.1,
+      "height": 0.1,
+      "type": "Light",
+      "rotation": 180, 
+      "defaultState": "red"
+    },
+    "South": {
+      "x": 0.6,
+      "y": 0.65,
+      "width": 0.1,
+      "height": 0.1,
+      "type": "Light",
+      "defaultState": "red"
+    },
+    "West": {
+      "x": 0.26,
+      "y": 0.62,
+      "width": 0.1,
+      "height": 0.1,
+      "type": "Light",
+      "rotation": 90,
+      "defaultState": "green"
+    },
+    "East": {
+      "x": 0.63,
+      "y": 0.27,
+      "width": 0.1,
+      "height": 0.1,
+      "type": "Light",
+      "rotation": 270,
+      "defaultState": "green"
+    }
+  }/*,
+  "transitions": {
+    "To Red": {
+      "First": "off",
+      "Second": "off"
+    },
+    "To Both": {
+      "First": "off",
+      "Second": "on"
+    },
+    "To Green": {
+      "First": "on",
+      "Second": "on"
+    }
+  },
+  "sequences": {
+    "FromRedToGreen": {
+      "steps": {
+        "Begin": {
+          "transition": "To Red",
+          "duration": 1
+        },
+        "GoingToYellow": {
+          "transition": "To Both",
+          "duration": 1
+        },
+        "NowGreen": {
+          "transition": "To Green",
+          "duration": 1
+        }
+      }
+    }
+  }*/
+}
+ 
+
