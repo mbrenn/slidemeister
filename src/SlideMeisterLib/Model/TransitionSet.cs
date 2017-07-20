@@ -1,8 +1,11 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using SlideMeisterLib.Annotations;
 
 namespace SlideMeisterLib.Model
 {
-    public class TransitionSet
+    public class TransitionSet : INotifyPropertyChanged
     {
         /// <summary>
         /// Gets or sets the name 
@@ -33,6 +36,14 @@ namespace SlideMeisterLib.Model
         public override string ToString()
         {
             return Name;
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

@@ -1,8 +1,11 @@
 ﻿using System;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using SlideMeisterLib.Annotations;
 
 namespace SlideMeisterLib.Model
 {
-    public class TransitionSequenceStep
+    public class TransitionSequenceStep : INotifyPropertyChanged
     {
         /// <summary>
         /// Gets or sets the duration of the current step
@@ -44,6 +47,14 @@ namespace SlideMeisterLib.Model
         public override string ToString()
         {
             return $"Transition Step with duration: {Duration.TotalMilliseconds} ms";
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

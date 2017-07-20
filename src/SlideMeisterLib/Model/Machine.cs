@@ -1,16 +1,34 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using SlideMeisterLib.Annotations;
 
 namespace SlideMeisterLib.Model
 {
     /// <summary>
     /// Defines the machine which contains items with different states
     /// </summary>
-    public class Machine
+    public class Machine : INotifyPropertyChanged
     {
+        private string _name;
+
         /// <summary>
         /// Gets or sets the name of the machine
         /// </summary>
-        public string Name { get; set; }
+        public string Name
+        {
+            get => _name;
+            set
+            {
+                if (value == _name)
+                {
+                    return;
+                }
+
+                _name = value;
+                OnPropertyChanged();
+            }
+        }
 
         /// <summary>
         /// Gets or sets the url of the background image
@@ -33,6 +51,14 @@ namespace SlideMeisterLib.Model
         public override string ToString()
         {
             return Name;
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }
