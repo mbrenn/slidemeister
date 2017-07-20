@@ -1,7 +1,7 @@
 {
   "name": "The Crossing",
   "version": "1.0",
-  "backgroundImage":  "Crossing.png",
+  "backgroundImage": "Crossing.png",
   "types": {
     "Light": {
       "states": {
@@ -27,7 +27,7 @@
       "width": 0.1,
       "height": 0.1,
       "type": "Light",
-      "rotation": 180, 
+      "rotation": 180,
       "defaultState": "red"
     },
     "South": {
@@ -56,39 +56,93 @@
       "rotation": 270,
       "defaultState": "green"
     }
-  }/*,
+  },
   "transitions": {
-    "To Red": {
-      "First": "off",
-      "Second": "off"
+    "All Red": {
+      "North": "red",
+      "South": "red",
+      "West": "red",
+      "East": "red"
     },
-    "To Both": {
-      "First": "off",
-      "Second": "on"
+    "N/S Prep": {
+      "North": "redyellow",
+      "South": "redyellow",
+      "West": "red",
+      "East": "red"
     },
-    "To Green": {
-      "First": "on",
-      "Second": "on"
+    "N/S": {
+      "North": "green",
+      "South": "green",
+      "West": "red",
+      "East": "red"
+    },
+    "N/S After": {
+      "North": "yellow",
+      "South": "yellow",
+      "West": "red",
+      "East": "red"
+    },
+    "W/E Prep": {
+      "West": "redyellow",
+      "East": "redyellow",
+      "North": "red",
+      "South": "red"
+    },
+    "W/E": {
+      "West": "green",
+      "East": "green",
+      "North": "red",
+      "South": "red"
+    },
+    "W/E After": {
+      "West": "yellow",
+      "East": "yellow",
+      "North": "red",
+      "South": "red"
     }
   },
   "sequences": {
-    "FromRedToGreen": {
+    "Complete": {
       "steps": {
-        "Begin": {
-          "transition": "To Red",
+        "1": {
+          "transition": "All Red",
           "duration": 1
         },
-        "GoingToYellow": {
-          "transition": "To Both",
+        "2": {
+          "transition": "N/S Prep",
           "duration": 1
         },
-        "NowGreen": {
-          "transition": "To Green",
+        "3": {
+          "transition": "N/S",
+          "duration": 1
+        },
+        "4": {
+          "transition": "N/S After",
+          "duration": 1
+        },
+        "5": {
+          "transition": "All Red",
+          "duration": 1
+        },
+        "6": {
+          "transition": "W/E Prep",
+          "duration": 1
+        },
+        "7": {
+          "transition": "W/E",
+          "duration": 1
+        },
+        "8": {
+          "transition": "W/E After",
+          "duration": 1
+        },
+        "9": {
+          "transition": "All Red",
           "duration": 1
         }
       }
     }
-  }*/
+  }
 }
  
 

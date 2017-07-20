@@ -272,11 +272,13 @@ namespace SlideMeister
 
                     do
                     {
-                        var filename = Path.Combine(
+                        var filename = $"{sequence.Name} - {navigation.CurrentStep.Transitions.Name}.png";
+                        var validFilename = new string(filename.Where(ch => !InvalidFileNameChars.Contains(ch)).ToArray());
+                        var filePath = Path.Combine(
                             directory ?? ".",
-                            $"{sequence.Name} - {navigation.CurrentStep.Transitions.Name}.png");
+                            validFilename);
 
-                        StoreCurrentMachineIntoPng(filename);
+                        StoreCurrentMachineIntoPng(filePath);
 
 
                         if (!navigation.NavigateToNext())
@@ -322,6 +324,7 @@ namespace SlideMeister
 
         // and so on for other encoders (if you want)
 
+        static readonly char[] InvalidFileNameChars = Path.GetInvalidFileNameChars();
 
         void SaveUsingEncoder(FrameworkElement visual, string fileName, BitmapEncoder encoder)
         {
@@ -330,6 +333,7 @@ namespace SlideMeister
             BitmapFrame frame = BitmapFrame.Create(bitmap);
             encoder.Frames.Add(frame);
 
+            
             using (var stream = File.Create(fileName))
             {
                 encoder.Save(stream);
