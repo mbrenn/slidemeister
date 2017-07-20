@@ -19,8 +19,7 @@ namespace SlideMeister.Control
         {
             InitializeComponent();
         }
-
-
+        
         /// <summary>
         /// Stores the machine to be shown
         /// </summary>
@@ -37,6 +36,13 @@ namespace SlideMeister.Control
         /// Stores the background image being used for the presentation
         /// </summary>
         private Image _backgroundImage;
+
+        /// <summary>
+        /// Gets the size of the background image
+        /// </summary>
+        public Size BackgroundSize => new Size(
+            _backgroundImage.Width,
+            _backgroundImage.Height);
 
         /// <summary>
         /// Stores the dictionary between overlay items and their corresponding image
@@ -181,7 +187,7 @@ namespace SlideMeister.Control
         {
             foreach (var pair in ItemViews)
             {
-                UpdateState(pair);
+                UpdateState(pair, null);
             }
         }
 
@@ -189,7 +195,7 @@ namespace SlideMeister.Control
         /// Updates the state and the button text
         /// </summary>
         /// <param name="itemView">Pair to be updated</param>
-        public void UpdateState(ItemView itemView)
+        public void UpdateState(ItemView itemView, TextBlock stateBlock)
         {
             var state = itemView.Item.CurrentState;
             if (_imagesForStates.TryGetValue(state, out BitmapImage source))
@@ -200,6 +206,11 @@ namespace SlideMeister.Control
             if (itemView.StateButton != null)
             {
                 itemView.StateButton.Content = $"{itemView.Item.Name}: {itemView.Item.CurrentState}";
+            }
+
+            if (stateBlock != null)
+            {
+                stateBlock.Text = itemView.Item?.CurrentState.Name ?? string.Empty;
             }
         }
 

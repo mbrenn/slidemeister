@@ -24,33 +24,64 @@
                 </MenuItem>
             </MenuItem>
         </Menu>
-        <Control:SlideControl Grid.Row="1" Grid.Column="0" x:Name="SlideCanvas"/>
-        <TabControl Grid.Row="2" Grid.Column="0" >
-            <TabItem>
-                <TabItem.Header>States</TabItem.Header>
-                <ScrollViewer>
-                    <StackPanel Orientation="Vertical" x:Name="StateButtons"></StackPanel>
-                </ScrollViewer>
-            </TabItem>
-            <TabItem>
-                <TabItem.Header>Transitions</TabItem.Header>
-                <ScrollViewer>
-                    <StackPanel Orientation="Vertical" x:Name="TransitionButtons"></StackPanel>
-                </ScrollViewer>
-            </TabItem>
-            <TabItem>
-                <TabItem.Header>Sequences</TabItem.Header>
-                <ScrollViewer>
-                    <Grid x:Name="SequenceButtons" VerticalAlignment="Top">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition></ColumnDefinition>
-                            <ColumnDefinition></ColumnDefinition>
-                            <ColumnDefinition></ColumnDefinition>
-                            <ColumnDefinition></ColumnDefinition>
-                        </Grid.ColumnDefinitions>
-                    </Grid>
-                </ScrollViewer>
-            </TabItem>
-        </TabControl>
+        <Border Grid.Row="1" Grid.Column="0" BorderThickness="1" Padding="5" BorderBrush="Black">
+            <Control:SlideControl x:Name="SlideCanvas"/>
+        </Border>
+        <Border Grid.Row="2" Grid.Column="0" BorderThickness="1" Padding="5" BorderBrush="Black"
+                Background="Orange">
+            <TabControl>
+                <TabItem>
+                    <TabItem.Header>States</TabItem.Header>
+                    <ScrollViewer VerticalAlignment="Top" Margin="10">
+                        <Grid x:Name="StateButtons">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                        </Grid>
+                    </ScrollViewer>
+                </TabItem>
+                <TabItem>
+                    <TabItem.Header>StatesTable</TabItem.Header>
+                    <ScrollViewer VerticalAlignment="Top" Margin="10">
+                        <ListView x:Name="StateButtonsView">
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}"></GridViewColumn>
+                                    <GridViewColumn Header="State" DisplayMemberBinding="{Binding State}"></GridViewColumn>
+                                    <GridViewColumn Header="Next">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <Button Command="{Binding NextState}">Next</Button>
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+                    </ScrollViewer>
+                </TabItem>
+                <TabItem>
+                    <TabItem.Header>Transitions</TabItem.Header>
+                    <ScrollViewer>
+                        <StackPanel Orientation="Vertical" x:Name="TransitionButtons"></StackPanel>
+                    </ScrollViewer>
+                </TabItem>
+                <TabItem>
+                    <TabItem.Header>Sequences</TabItem.Header>
+                    <ScrollViewer>
+                        <Grid x:Name="SequenceButtons" VerticalAlignment="Top">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition></ColumnDefinition>
+                                <ColumnDefinition></ColumnDefinition>
+                                <ColumnDefinition></ColumnDefinition>
+                                <ColumnDefinition></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                        </Grid>
+                    </ScrollViewer>
+                </TabItem>
+            </TabControl>
+        </Border>
     </Grid>
 </Window>
