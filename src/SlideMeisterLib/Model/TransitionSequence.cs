@@ -1,8 +1,11 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using SlideMeisterLib.Annotations;
 
 namespace SlideMeisterLib.Model
 {
-    public class TransitionSequence
+    public class TransitionSequence : INotifyPropertyChanged
     {
         public string Name { get; set; }
 
@@ -21,6 +24,14 @@ namespace SlideMeisterLib.Model
         public TransitionSequence(string name)
         {
             Name = name;
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

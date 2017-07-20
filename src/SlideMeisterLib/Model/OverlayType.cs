@@ -1,9 +1,12 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
+using SlideMeisterLib.Annotations;
 
 namespace SlideMeisterLib.Model
 {
-    public class OverlayType
+    public class OverlayType : INotifyPropertyChanged
     {
         private OverlayState _defaultState;
 
@@ -41,6 +44,14 @@ namespace SlideMeisterLib.Model
             }
 
             return States[pos + 1];
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }
