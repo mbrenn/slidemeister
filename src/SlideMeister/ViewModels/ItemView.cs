@@ -20,7 +20,5 @@ namespace SlideMeister.ViewModels
         /// Gets or sets the ui element hosting the item as a complete element
         /// </summary>
         public UIElement UiElement { get; set; }
-
-        public Button StateButton { get; set; }
     }
 }

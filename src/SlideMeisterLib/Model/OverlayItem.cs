@@ -10,6 +10,7 @@ namespace SlideMeisterLib.Model
         private Rectangle _position;
         private OverlayType _type;
         private OverlayState _currentState;
+        private double _rotation;
 
         /// <summary>
         /// Gets the name of the overlayitem
@@ -61,7 +62,16 @@ namespace SlideMeisterLib.Model
         /// <summary>
         /// Defines the rotation of the elements
         /// </summary>
-        public double Rotation { get; set; }
+        public double Rotation
+        {
+            get => _rotation;
+            set
+            {
+                if (value.Equals(_rotation)) return;
+                _rotation = value;
+                OnPropertyChanged();
+            }
+        }
 
         /// <summary>
         /// Initializes a new instance of the OverlayItem

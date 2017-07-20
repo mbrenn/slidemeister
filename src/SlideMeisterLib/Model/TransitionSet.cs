@@ -7,16 +7,37 @@ namespace SlideMeisterLib.Model
 {
     public class TransitionSet : INotifyPropertyChanged
     {
+        private string _name;
+        private List<Transition> _transitions = new List<Transition>();
+
         /// <summary>
         /// Gets or sets the name 
         /// </summary>
-        public string Name { get; set; }
+        public string Name
+        {
+            get => _name;
+            set
+            {
+                if (value == _name) return;
+                _name = value;
+                OnPropertyChanged();
+            }
+        }
 
         /// <summary>
         /// Gets or sets the list of transition for the transition set. Each of the transition will be
         /// applied to the machine
         /// </summary>
-        public List<Transition> Transitions { get; set; } = new List<Transition>();
+        public List<Transition> Transitions
+        {
+            get => _transitions;
+            set
+            {
+                if (Equals(value, _transitions)) return;
+                _transitions = value;
+                OnPropertyChanged();
+            }
+        }
 
         /// <summary>
         /// Initializes a new instance of the TransitionSet

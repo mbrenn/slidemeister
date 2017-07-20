@@ -11,6 +11,11 @@ namespace SlideMeisterLib.Model
     public class Machine : INotifyPropertyChanged
     {
         private string _name;
+        private string _backgroundImageUrl;
+        private string _version;
+        private List<OverlayItem> _items = new List<OverlayItem>();
+        private List<TransitionSet> _transitions = new List<TransitionSet>();
+        private List<TransitionSequence> _sequences = new List<TransitionSequence>();
 
         /// <summary>
         /// Gets or sets the name of the machine
@@ -20,11 +25,7 @@ namespace SlideMeisterLib.Model
             get => _name;
             set
             {
-                if (value == _name)
-                {
-                    return;
-                }
-
+                if (value == _name) return;
                 _name = value;
                 OnPropertyChanged();
             }
@@ -33,15 +34,60 @@ namespace SlideMeisterLib.Model
         /// <summary>
         /// Gets or sets the url of the background image
         /// </summary>
-        public string BackgroundImageUrl { get; set; }
+        public string BackgroundImageUrl
+        {
+            get => _backgroundImageUrl;
+            set
+            {
+                if (value == _backgroundImageUrl) return;
+                _backgroundImageUrl = value;
+                OnPropertyChanged();
+            }
+        }
 
-        public string Version { get; set; }
+        public string Version
+        {
+            get => _version;
+            set
+            {
+                if (value == _version) return;
+                _version = value;
+                OnPropertyChanged();
+            }
+        }
 
-        public List<OverlayItem> Items { get; set; } = new List<OverlayItem>();
+        public List<OverlayItem> Items
+        {
+            get => _items;
+            set
+            {
+                if (Equals(value, _items)) return;
+                _items = value;
+                OnPropertyChanged();
+            }
+        }
 
-        public List<TransitionSequence> Sequences { get; set; } = new List<TransitionSequence>();
+        public List<TransitionSequence> Sequences
+        {
+            get => _sequences;
+            set
+            {
+                if (Equals(value, _sequences)) return;
+                _sequences = value;
+                OnPropertyChanged();
+            }
+        }
 
-        public List<TransitionSet> Transitions { get; set; } = new List<TransitionSet>();
+        public List<TransitionSet> Transitions
+        {
+            get => _transitions;
+            set
+            {
+                if (Equals(value, _transitions)) return;
+                _transitions = value;
+                OnPropertyChanged();
+            }
+        }
 
         public void AddItem(OverlayItem item)
         {

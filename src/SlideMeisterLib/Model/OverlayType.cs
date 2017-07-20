@@ -9,10 +9,31 @@ namespace SlideMeisterLib.Model
     public class OverlayType : INotifyPropertyChanged
     {
         private OverlayState _defaultState;
+        private string _name;
+        private List<OverlayState> _states = new List<OverlayState>();
 
-        public string Name { get; set; }
+        public string Name
+        {
+            get => _name;
+            set
+            {
+                if (value == _name) return;
+                _name = value;
+                OnPropertyChanged();
+            }
+        }
 
-        public List<OverlayState> States { get; set; } = new List<OverlayState>();
+        public List<OverlayState> States
+        {
+            get => _states;
+            set
+            {
+                if (Equals(value, _states)) return;
+                _states = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(DefaultState));
+            }
+        }
 
         public OverlayType(string name)
         {

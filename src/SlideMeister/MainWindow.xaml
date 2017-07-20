@@ -10,9 +10,12 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="70*"></RowDefinition>
-            <RowDefinition Height="30*"></RowDefinition>
         </Grid.RowDefinitions>
-        <Menu Grid.Row="0" Grid.Column="0">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="70*"/>
+            <ColumnDefinition Width="30*"/>
+        </Grid.ColumnDefinitions>
+        <Menu Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
             <MenuItem Header="_File">
                 <MenuItem Header="Open..." Click="FileOpen_Click"></MenuItem>
                 <Separator />
@@ -27,29 +30,16 @@
         <Border Grid.Row="1" Grid.Column="0" BorderThickness="1" Padding="5" BorderBrush="Black">
             <Control:SlideControl x:Name="SlideCanvas"/>
         </Border>
-        <Border Grid.Row="2" Grid.Column="0" BorderThickness="1" Padding="5" BorderBrush="Black"
+        <Border Grid.Row="1" Grid.Column="1" BorderThickness="1" Padding="5" BorderBrush="Black"
                 Background="Orange">
             <TabControl>
                 <TabItem>
                     <TabItem.Header>States</TabItem.Header>
-                    <ScrollViewer VerticalAlignment="Top" Margin="10">
-                        <Grid x:Name="StateButtons">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition/>
-                                <ColumnDefinition/>
-                                <ColumnDefinition/>
-                            </Grid.ColumnDefinitions>
-                        </Grid>
-                    </ScrollViewer>
-                </TabItem>
-                <TabItem>
-                    <TabItem.Header>StatesTable</TabItem.Header>
-                    <ScrollViewer VerticalAlignment="Top" Margin="10">
                         <ListView x:Name="StateButtonsView">
                             <ListView.View>
                                 <GridView>
-                                    <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}"></GridViewColumn>
-                                    <GridViewColumn Header="State" DisplayMemberBinding="{Binding State}"></GridViewColumn>
+                                <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}" Width="Auto"></GridViewColumn>
+                                <GridViewColumn Header="State" DisplayMemberBinding="{Binding State}" Width="Auto"></GridViewColumn>
                                     <GridViewColumn Header="Next">
                                         <GridViewColumn.CellTemplate>
                                             <DataTemplate>
@@ -60,26 +50,55 @@
                                 </GridView>
                             </ListView.View>
                         </ListView>
-                    </ScrollViewer>
                 </TabItem>
                 <TabItem>
                     <TabItem.Header>Transitions</TabItem.Header>
-                    <ScrollViewer>
-                        <StackPanel Orientation="Vertical" x:Name="TransitionButtons"></StackPanel>
-                    </ScrollViewer>
+                    <ListView x:Name="TransitionView">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}" Width="Auto"></GridViewColumn>
+                                <GridViewColumn Header="Switch To" Width="Auto">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Button Command="{Binding SwitchTo}">Transition</Button>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
                 </TabItem>
                 <TabItem>
-                    <TabItem.Header>Sequences</TabItem.Header>
-                    <ScrollViewer>
-                        <Grid x:Name="SequenceButtons" VerticalAlignment="Top">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition></ColumnDefinition>
-                                <ColumnDefinition></ColumnDefinition>
-                                <ColumnDefinition></ColumnDefinition>
-                                <ColumnDefinition></ColumnDefinition>
-                            </Grid.ColumnDefinitions>
-                        </Grid>
-                    </ScrollViewer>
+                    <TabItem.Header>Transitions</TabItem.Header>
+                    <ListView x:Name="SequenceView">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}" Width="Auto"></GridViewColumn>
+                                <GridViewColumn Header="Transition" DisplayMemberBinding="{Binding Transition}" Width="Auto"></GridViewColumn>
+                                <GridViewColumn Header="Next" Width="Auto">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Button Command="{Binding Initialize}">Initialize</Button>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="Previous" Width="Auto">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Button Command="{Binding Previous}">Previous</Button>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="Next" Width="Auto">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Button Command="{Binding Next}">Next</Button>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
                 </TabItem>
             </TabControl>
         </Border>

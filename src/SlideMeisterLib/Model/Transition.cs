@@ -6,9 +6,30 @@ namespace SlideMeisterLib.Model
 {
     public class Transition : INotifyPropertyChanged
     {
-        public OverlayItem Item { get; set; }
+        private OverlayItem _item;
+        private OverlayState _state;
 
-        public OverlayState State { get; set; }
+        public OverlayItem Item
+        {
+            get => _item;
+            set
+            {
+                if (Equals(value, _item)) return;
+                _item = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public OverlayState State
+        {
+            get => _state;
+            set
+            {
+                if (Equals(value, _state)) return;
+                _state = value;
+                OnPropertyChanged();
+            }
+        }
 
         public Transition(OverlayItem item, OverlayState state)
         {

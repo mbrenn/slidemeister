@@ -7,7 +7,18 @@ namespace SlideMeisterLib.Model
 {
     public class TransitionSequence : INotifyPropertyChanged
     {
-        public string Name { get; set; }
+        private string _name;
+
+        public string Name
+        {
+            get => _name;
+            set
+            {
+                if (value == _name) return;
+                _name = value;
+                OnPropertyChanged();
+            }
+        }
 
         public List<TransitionSequenceStep> Steps { get; set; }
             = new List<TransitionSequenceStep>();

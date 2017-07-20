@@ -130,9 +130,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Helper\ActionCommand.cs" />
     <Compile Include="Control\SlideControl.xaml.cs">
       <DependentUpon>SlideControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Properties\Annotations.cs" />
     <Compile Include="ViewModels\ItemView.cs" />
     <Page Include="Control\SlideControl.xaml">
       <SubType>Designer</SubType>

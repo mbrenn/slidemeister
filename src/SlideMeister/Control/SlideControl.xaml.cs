@@ -187,7 +187,7 @@ namespace SlideMeister.Control
         {
             foreach (var pair in ItemViews)
             {
-                UpdateState(pair, null);
+                UpdateState(pair);
             }
         }
 
@@ -195,22 +195,12 @@ namespace SlideMeister.Control
         /// Updates the state and the button text
         /// </summary>
         /// <param name="itemView">Pair to be updated</param>
-        public void UpdateState(ItemView itemView, TextBlock stateBlock)
+        public void UpdateState(ItemView itemView)
         {
             var state = itemView.Item.CurrentState;
             if (_imagesForStates.TryGetValue(state, out BitmapImage source))
             {
                 itemView.Image.Source = source;
-            }
-
-            if (itemView.StateButton != null)
-            {
-                itemView.StateButton.Content = $"{itemView.Item.Name}: {itemView.Item.CurrentState}";
-            }
-
-            if (stateBlock != null)
-            {
-                stateBlock.Text = itemView.Item?.CurrentState.Name ?? string.Empty;
             }
         }
 
