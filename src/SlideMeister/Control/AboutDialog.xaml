@@ -1,0 +1,22 @@
+﻿<Window x:Class="SlideMeister.Control.AboutDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SlideMeister.Control"
+        mc:Ignorable="d"
+        Title="About" Width="400" WindowStartupLocation="CenterOwner" SizeToContent="Height" >
+    <StackPanel Margin="10" HorizontalAlignment="Center">
+        <TextBlock HorizontalAlignment="Center" FontWeight="Bold">Slide Meister</TextBlock>
+        <TextBlock HorizontalAlignment="Center">Author: <Hyperlink NavigateUri="mailto:brenn@depon.net">Martin Brenn</Hyperlink></TextBlock>
+        <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap">This application may be distributed for free. I'd also take free beer. </TextBlock>
+        <TextBlock HorizontalAlignment="Center">
+            <Hyperlink NavigateUri="http://www.depon.net">
+            http://www.depon.net/        </Hyperlink>
+        </TextBlock>
+
+
+        <Button Click="CloseOnClick" HorizontalAlignment="Right">Close</Button>
+        
+    </StackPanel>
+</Window>

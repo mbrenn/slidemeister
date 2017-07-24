@@ -7,12 +7,12 @@ using System.Windows;
 // Allgemeine Informationen über eine Assembly werden über die folgenden
 // Attribute gesteuert. Ändern Sie diese Attributwerte, um die Informationen zu ändern,
 // die einer Assembly zugeordnet sind.
-[assembly: AssemblyTitle("SlideMeister")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("Slide Meister")]
+[assembly: AssemblyDescription("A cool, new appliation to create a set of images for each animation step. ")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Martin Brenn")]
 [assembly: AssemblyProduct("SlideMeister")]
-[assembly: AssemblyCopyright("Copyright ©  2017")]
+[assembly: AssemblyCopyright("Alle Rechte vorbehalten. This program may be distributed for free.")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

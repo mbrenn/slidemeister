@@ -7,6 +7,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Ribbon;
 using System.Windows.Forms;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -26,7 +27,7 @@ namespace SlideMeister
     /// <summary>
     /// Interaktionslogik für MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow
     {
         public class StateInfo : INotifyPropertyChanged
         {
@@ -338,6 +339,13 @@ namespace SlideMeister
             {
                 encoder.Save(stream);
             }
+        }
+
+        private void About_Click(object sender, RoutedEventArgs e)
+        {
+            var about = new AboutDialog();
+            about.Owner = this;
+            about.ShowDialog();
         }
     }
 }

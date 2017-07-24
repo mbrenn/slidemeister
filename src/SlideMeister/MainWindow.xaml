@@ -1,4 +1,4 @@
-﻿<Window xmlns:Control="clr-namespace:SlideMeister.Control"  x:Class="SlideMeister.MainWindow"
+﻿<Window xmlns:control="clr-namespace:SlideMeister.Control"  x:Class="SlideMeister.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -15,7 +15,31 @@
             <ColumnDefinition Width="70*"/>
             <ColumnDefinition Width="30*"/>
         </Grid.ColumnDefinitions>
-        <Menu Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
+        <Ribbon Grid.ColumnSpan="2">
+            <Ribbon.ApplicationMenu>
+                <RibbonApplicationMenu>
+                    <RibbonApplicationMenuItem
+                    Header="Close Window" ImageSource="assets/images/close_window.png" Click="Close_Click"/>
+                </RibbonApplicationMenu>
+                
+            </Ribbon.ApplicationMenu>
+            <RibbonTab Header="The menu">
+                <RibbonGroup Header="File">
+                    <RibbonButton Label="Open" Click="FileOpen_Click" LargeImageSource="assets/images/document_flat-open.png"></RibbonButton>
+                    <RibbonButton Label="Close" Click="Close_Click" LargeImageSource="assets/images/close_window.png"></RibbonButton>
+
+                </RibbonGroup>
+                <RibbonGroup Header="Export">
+                    <RibbonButton Label="Save Image" Click="SaveImage_OnClick" LargeImageSource="assets/images/picture-export.png"></RibbonButton>
+                    <RibbonButton Label="Save all sequences" Click="SaveSequences_OnClick" LargeImageSource="assets/images/pictures-export.png"></RibbonButton>
+                </RibbonGroup>
+                <RibbonGroup Header="About">
+                    <RibbonButton Label="About" Click="About_Click" LargeImageSource="assets/images/info.png"></RibbonButton>
+                </RibbonGroup>
+            </RibbonTab>
+            
+        </Ribbon>
+        <!--<Menu Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
             <MenuItem Header="_File">
                 <MenuItem Header="Open..." Click="FileOpen_Click"></MenuItem>
                 <Separator />
@@ -23,12 +47,12 @@
             </MenuItem>
             <MenuItem Header="_Image">
                 <MenuItem Header="Save Image..." Click="SaveImage_OnClick"></MenuItem>
-                <MenuItem Header="Save all Sequences..." Click="SaveSequences_OnClick">
+                <MenuItem Header="Save all Sequences...">
                 </MenuItem>
             </MenuItem>
-        </Menu>
+        </Menu>-->
         <Border Grid.Row="1" Grid.Column="0" BorderThickness="1" Padding="5" BorderBrush="Black">
-            <Control:SlideControl x:Name="SlideCanvas"/>
+            <control:SlideControl x:Name="SlideCanvas"/>
         </Border>
         <Border Grid.Row="1" Grid.Column="1" BorderThickness="1" Padding="5" BorderBrush="Black"
                 Background="Orange">
