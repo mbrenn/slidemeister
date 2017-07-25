@@ -4,7 +4,10 @@ using System.ComponentModel;
 using SlideMeisterLib.Model;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Ribbon;
@@ -112,39 +115,58 @@ namespace SlideMeister
             }
         }
 
+        /// <summary>
+        /// Stores the current action
+        /// </summary>
+        public CancellationTokenSource CurrentSequence;
+
         public class SequenceInfo: INotifyPropertyChanged
         {
-            private TransitionSequence _sequence;
-            private TransitionNavigation _navigation;
+            public TransitionSequence Sequence { get; }
+            public TransitionNavigation Navigation { get; }
 
-            public SequenceInfo(MainWindow window, TransitionSequence transitionSet)
+            public SequenceInfo(MainWindow window, TransitionSequence sequence)
             {
-                _sequence = transitionSet;
+                Sequence = sequence;
 
-                _navigation = new TransitionNavigation(window.Machine, _sequence);
+                Navigation = new TransitionNavigation(window.Machine, Sequence);
 
                 Initialize = new ActionCommand(() =>
                 {
-                    _navigation.Initialize();
+                    Navigation.Initialize();
                     OnPropertyChanged1(nameof(Transition));
                     window.SlideCanvas.UpdateStates();
                 });
 
                 Previous = new ActionCommand(() =>
                 {
-                    _navigation.NavigateToPrevious();
+                    Navigation.NavigateToPrevious();
                     OnPropertyChanged1(nameof(Transition));
                     window.SlideCanvas.UpdateStates();
                 });
 
                 Next = new ActionCommand(() =>
                 {
-                    _navigation.NavigateToNext();
+                    Navigation.NavigateToNext();
                     OnPropertyChanged1(nameof(Transition));
                     window.SlideCanvas.UpdateStates();
                 });
 
-                _sequence.PropertyChanged += (x, y) =>
+                Play = new ActionCommand(() =>
+                {
+                    window.CurrentSequence?.Cancel();
+
+                    window.CurrentSequence = new CancellationTokenSource();
+                    try
+                    {
+                        window.StartAutomaticSequence(this, window.CurrentSequence.Token);
+                    }
+                    catch (OperationCanceledException)
+                    {
+                    }
+                });
+
+                Sequence.PropertyChanged += (x, y) =>
                 {
                     if (y.PropertyName == "Name")
                     {
@@ -153,13 +175,14 @@ namespace SlideMeister
                 };
             }
 
-            public string Name => _sequence.Name;
+            public string Name => Sequence.Name;
 
-            public string Transition => _navigation?.CurrentStep == null ? "None" : _navigation.CurrentStep.Transitions.Name;
+            public string Transition => Navigation?.CurrentStep == null ? "None" : Navigation.CurrentStep.Transitions.Name;
 
             public ActionCommand Initialize { get; }
             public ActionCommand Previous { get; }
             public ActionCommand Next { get; }
+            public ActionCommand Play { get; }
 
             public event PropertyChangedEventHandler PropertyChanged;
 
@@ -168,8 +191,49 @@ namespace SlideMeister
             {
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
             }
+
+            /// <summary>
+            /// Called, when an external event has performed a transition. 
+            /// The PropertyChanged event is thrown
+            /// </summary>
+            public void TransitionOccured()
+            {
+                OnPropertyChanged1(nameof(Transition));
+            }
         }
-        
+
+        /// <summary>
+        /// Starts the automatic sequence by clicking the Start button
+        /// </summary>
+        /// <param name="info">The sequence information for the chosen element</param>
+        /// <param name="token">The cancellation token being used to interrupt in case of a cancellation</param>
+        private async void StartAutomaticSequence(SequenceInfo info, CancellationToken token)
+        {
+            try
+            {
+                token.ThrowIfCancellationRequested();
+                info.Navigation.Initialize();
+                SlideCanvas.UpdateStates();
+
+                while (true)
+                {
+                    info.TransitionOccured();
+                    await Task.Delay(info.Navigation.CurrentStep.Duration, token);
+                    if (info.Navigation.NavigateToNext())
+                    {
+                        SlideCanvas.UpdateStates();
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+            }
+            catch (TaskCanceledException)
+            {
+            }
+        }
+
         /// <summary>
         /// Stores the machine to be shown
         /// </summary>
@@ -259,6 +323,12 @@ namespace SlideMeister
 
         private void SaveSequences_OnClick(object sender, RoutedEventArgs e)
         {
+            var dlg2 = new SaveFileDialog
+            {
+                AddExtension = true,
+                Filter = "PNG-File (*.png)|*.png;*.slidemeister",
+                
+            };
             var dlg = new FolderBrowserDialog();
 
 
@@ -346,6 +416,39 @@ namespace SlideMeister
             var about = new AboutDialog();
             about.Owner = this;
             about.ShowDialog();
+        }
+
+        private void FileOpenExample_Click(object sender, RoutedEventArgs e)
+        {
+            var path = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), "examples");
+            if (!Directory.Exists(path))
+            {
+                MessageBox.Show(this,
+                    "For whatever reason, no example directory is given within the application folder");
+            }
+
+            var dlg = new OpenFileDialog
+            {
+                AddExtension = true,
+                CheckFileExists = true,
+                Filter = "SlideMeister Files (*.json, *.slidemeister) |*.json;*.slidemeister",
+                InitialDirectory = path
+            };
+
+            if (dlg.ShowDialog(this) == true)
+            {
+                try
+                {
+                    // Load file
+                    Machine = Loader.LoadMachine(dlg.FileName);
+                    CreateView();
+                }
+                catch (Exception exc)
+                {
+                    MessageBox.Show(this, $"Exception occured: \r\n\r\n{exc.Message}");
+                }
+            }
+
         }
     }
 }

@@ -26,6 +26,7 @@
             <RibbonTab Header="The menu">
                 <RibbonGroup Header="File">
                     <RibbonButton Label="Open" Click="FileOpen_Click" LargeImageSource="assets/images/document_flat-open.png"></RibbonButton>
+                    <RibbonButton Label="Open Examples" Click="FileOpenExample_Click" LargeImageSource="assets/images/document_flat-favorite.png"></RibbonButton>
                     <RibbonButton Label="Close" Click="Close_Click" LargeImageSource="assets/images/close_window.png"></RibbonButton>
 
                 </RibbonGroup>
@@ -37,20 +38,7 @@
                     <RibbonButton Label="About" Click="About_Click" LargeImageSource="assets/images/info.png"></RibbonButton>
                 </RibbonGroup>
             </RibbonTab>
-            
         </Ribbon>
-        <!--<Menu Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
-            <MenuItem Header="_File">
-                <MenuItem Header="Open..." Click="FileOpen_Click"></MenuItem>
-                <Separator />
-                <MenuItem Header="Close" Click="Close_Click"></MenuItem>
-            </MenuItem>
-            <MenuItem Header="_Image">
-                <MenuItem Header="Save Image..." Click="SaveImage_OnClick"></MenuItem>
-                <MenuItem Header="Save all Sequences...">
-                </MenuItem>
-            </MenuItem>
-        </Menu>-->
         <Border Grid.Row="1" Grid.Column="0" BorderThickness="1" Padding="5" BorderBrush="Black">
             <control:SlideControl x:Name="SlideCanvas"/>
         </Border>
@@ -93,7 +81,7 @@
                     </ListView>
                 </TabItem>
                 <TabItem>
-                    <TabItem.Header>Transitions</TabItem.Header>
+                    <TabItem.Header>Sequences</TabItem.Header>
                     <ListView x:Name="SequenceView">
                         <ListView.View>
                             <GridView>
@@ -102,21 +90,18 @@
                                 <GridViewColumn Header="Next" Width="Auto">
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
-                                            <Button Command="{Binding Initialize}">Initialize</Button>
+                                            <StackPanel>
+                                                <Button Command="{Binding Initialize}">Initialize</Button>
+                                                <Button Command="{Binding Previous}">Previous</Button>
+                                                <Button Command="{Binding Next}">Next</Button>
+                                            </StackPanel>
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
                                 <GridViewColumn Header="Previous" Width="Auto">
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
-                                            <Button Command="{Binding Previous}">Previous</Button>
-                                        </DataTemplate>
-                                    </GridViewColumn.CellTemplate>
-                                </GridViewColumn>
-                                <GridViewColumn Header="Next" Width="Auto">
-                                    <GridViewColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <Button Command="{Binding Next}">Next</Button>
+                                            <Button Command="{Binding Play}" VerticalAlignment="Top">Play</Button>
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>

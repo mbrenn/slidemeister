@@ -1,4 +1,5 @@
-﻿using SlideMeisterLib.Model;
+﻿using System;
+using SlideMeisterLib.Model;
 
 namespace SlideMeisterLib.Logic
 {
@@ -43,11 +44,13 @@ namespace SlideMeisterLib.Logic
             sequence.Steps.Add(
                 new TransitionSequenceStep(
                     "Top",
+                    TimeSpan.FromSeconds(1.0),
                     new Transition(firstLed, onState),
                     new Transition(secondLed, offState)));
             sequence.Steps.Add(
                 new TransitionSequenceStep(
                     "Bottom",
+                    TimeSpan.FromSeconds(1.0),
                     new Transition(firstLed, offState),
                     new Transition(secondLed, onState)));
 

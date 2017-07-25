@@ -212,21 +212,21 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="examples\Crossing\Crossing.png">
+    <None Include="examples\Crossing\Crossing.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="examples\Crossing\GreenLight.png">
+    </None>
+    <None Include="examples\Crossing\GreenLight.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="examples\Crossing\RedLight.png">
+    </None>
+    <None Include="examples\Crossing\RedLight.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="examples\Crossing\RedYellowLight.png">
+    </None>
+    <None Include="examples\Crossing\RedYellowLight.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="examples\Crossing\YellowLight.png">
+    </None>
+    <None Include="examples\Crossing\YellowLight.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Resource Include="assets\images\close_window.png" />
@@ -238,6 +238,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="assets\images\info.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="assets\images\document_flat-favorite.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
