@@ -1,0 +1,88 @@
+{
+  "name": "Lightswitch",
+  "version": "1.0",
+  "backgroundImage":  "background.png",
+  "types": {
+    "lamp": {
+      "states": {
+        "on": {
+          "image": "light_on.png"
+        },
+        "off": {
+          "image": "light_off.png"
+        }
+      }
+    },
+    "switch": {
+      "states": {
+        "up": {
+          "image": "switch_down.png"
+        },
+        "down": {
+          "image": "switch_up.png"
+        }
+      }
+    }
+  },
+  "items": {
+    "LeftSwitch": {
+      "x": 0.2,
+      "y": 0.1,
+      "width": 0.2,
+      "height": 0.2,
+      "type": "switch",
+      "defaultState": "up" 
+    },
+    "RightSwitch": {
+      "x": 0.5,
+      "y": 0.1,
+      "width": 0.4,
+      "height": 0.4,
+      "type": "switch",
+      "rotation": 180,
+      "defaultState": "down" 
+    },
+    "Lamp": {
+      "x": 0.8,
+      "y": 0.5,
+      "width": 0.4,
+      "height": 0.4,
+      "type": "lamp",
+      "defaultState": "on"
+    }
+  }/*,
+  "transitions": {
+    "To Red": {
+      "First": "off",
+      "Second": "off"
+    },
+    "To Both": {
+      "First": "off",
+      "Second": "on"
+    },
+    "To Green": {
+      "First": "on",
+      "Second": "on"
+    }
+  },
+  "sequences": {
+    "FromRedToGreen": {
+      "steps": {
+        "Begin": {
+          "transition": "To Red",
+          "duration": 1
+        },
+        "GoingToYellow": {
+          "transition": "To Both",
+          "duration": 1
+        },
+        "NowGreen": {
+          "transition": "To Green",
+          "duration": 1
+        }
+      }
+    }
+  }*/
+}
+ 
+
