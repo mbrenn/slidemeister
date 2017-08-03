@@ -1,7 +1,7 @@
 {
   "name": "Lightswitch",
   "version": "1.0",
-  "backgroundImage":  "background.png",
+  "backgroundImage": "background.png",
   "types": {
     "lamp": {
       "states": {
@@ -26,63 +26,75 @@
   },
   "items": {
     "LeftSwitch": {
-      "x": 0.2,
-      "y": 0.1,
-      "width": 0.2,
-      "height": 0.2,
+      "x": "172px",
+      "y": "65px",
+      "width": "78px",
+      "height": "56px",
       "type": "switch",
-      "defaultState": "up" 
+      "defaultState": "up"
     },
     "RightSwitch": {
-      "x": 0.5,
-      "y": 0.1,
-      "width": 0.4,
-      "height": 0.4,
+      "x": "423px",
+      "y": "64px",
+      "width": "78px",
+      "height": "56px",
       "type": "switch",
       "rotation": 180,
-      "defaultState": "down" 
+      "defaultState": "down"
     },
     "Lamp": {
-      "x": 0.8,
-      "y": 0.5,
-      "width": 0.4,
-      "height": 0.4,
+      "x": "617px",
+      "y": "53px",
+      "width": "80px",
+      "height": "80px",
       "type": "lamp",
       "defaultState": "on"
     }
-  }/*,
+  },
   "transitions": {
-    "To Red": {
-      "First": "off",
-      "Second": "off"
+    "Off 1": {
+      "LeftSwitch": "up",
+      "RightSwitch": "up",
+      "Lamp": "off"
     },
-    "To Both": {
-      "First": "off",
-      "Second": "on"
+    "Off 2": {
+      "LeftSwitch": "down",
+      "RightSwitch": "down",
+      "Lamp": "off"
     },
-    "To Green": {
-      "First": "on",
-      "Second": "on"
+    "On 1": {
+      "LeftSwitch": "up",
+      "RightSwitch": "down",
+      "Lamp": "on"
+    },
+    "On 2": {
+      "LeftSwitch": "down",
+      "RightSwitch": "up",
+      "Lamp": "on"
     }
   },
   "sequences": {
-    "FromRedToGreen": {
+    "All": {
       "steps": {
-        "Begin": {
-          "transition": "To Red",
+        "Off 1": {
+          "transition": "Off 1",
           "duration": 1
         },
-        "GoingToYellow": {
-          "transition": "To Both",
+        "On 1": {
+          "transition": "On 1",
           "duration": 1
         },
-        "NowGreen": {
-          "transition": "To Green",
+        "Off 2": {
+          "transition": "Off 2",
+          "duration": 1
+        },
+        "On 2": {
+          "transition": "On 2",
           "duration": 1
         }
       }
     }
-  }*/
+  }
 }
  
 

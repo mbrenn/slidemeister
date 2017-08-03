@@ -45,6 +45,12 @@ namespace SlideMeister.Control
             _backgroundImage.Height);
 
         /// <summary>
+        /// Gets or sets the size of the bitmal which was loaded for the bitmap
+        /// It represents the original image and not the sized drawing area
+        /// </summary>
+        public Size OriginalBackgroundSize { get; set; }
+
+        /// <summary>
         /// Stores the dictionary between overlay items and their corresponding image
         /// </summary>
         public List<ItemView> ItemViews { get; } = new List<ItemView>();
@@ -69,7 +75,7 @@ namespace SlideMeister.Control
         /// <param name="width">Width in relative size</param>
         /// <param name="height">Height in relative size</param>
         /// <returns>Rectangle containing the absolute coordinate in pixels for WPF</returns>
-        public Rect ScaleToRect(double x, double y, double width, double height)
+        public Rect ScaleToRect(DoubleWithUnit x, DoubleWithUnit y, DoubleWithUnit width, DoubleWithUnit height)
         {
             if (Math.Abs(_ratioWidthToHeight) < 1E-7 || ActualWidth < 1E-7 || ActualHeight < 1E-7)
             {
@@ -84,12 +90,28 @@ namespace SlideMeister.Control
             var offsetX = (totalSize.Width - newWidth) / 2;
             var offsetY = (totalSize.Height - newHeight) / 2;
 
+            var scaleTop = 
+                x.Unit == Units.Percentage ? 
+                    newWidth * x.Value + offsetX :
+                    newWidth * x.Value / OriginalBackgroundSize.Width + offsetX;
+            var scaleLeft =
+                x.Unit == Units.Percentage
+                    ? newHeight * y.Value + offsetY
+                    : newHeight * y.Value / OriginalBackgroundSize.Height + offsetY;
+            var scaleWidth =
+                x.Unit == Units.Percentage ?
+                    newWidth * width.Value + offsetX :
+                    newWidth * width.Value / OriginalBackgroundSize.Width + offsetX; 
+            var scaleHeight =
+                x.Unit == Units.Percentage
+                    ? newHeight * height.Value + offsetY
+                    : newHeight * height.Value / OriginalBackgroundSize.Height + offsetY;
 
             return new Rect(
-                newWidth * x + offsetX,
-                newHeight * y + offsetY,
-                newWidth * width,
-                newHeight * height
+                scaleTop,
+                scaleLeft,
+                scaleWidth,
+                scaleHeight
             );
         }
 
@@ -128,13 +150,12 @@ namespace SlideMeister.Control
             // Removes the existing items
             _backgroundImage = null;
 
-            var dict = new Dictionary<OverlayItem, Image>();
-
             if (!string.IsNullOrEmpty(Machine.BackgroundImageUrl))
             {
                 var path = System.IO.Path.Combine(Environment.CurrentDirectory, Machine.BackgroundImageUrl);
                 var bitmap = new BitmapImage(new Uri(path));
                 _ratioWidthToHeight = bitmap.Width / bitmap.Height;
+                OriginalBackgroundSize = new Size(bitmap.Width, bitmap.Height);
 
                 var states = Machine.Items.SelectMany(x => x.Type.States).Distinct();
                 foreach (var state in states)
@@ -162,9 +183,6 @@ namespace SlideMeister.Control
                     border.Child = imageForItem;
 
                     BackgroundCanvas.Children.Add(border);
-                    dict[item] = imageForItem;
-
-
                     var itemView = new ItemView
                     {
                         Item = item,
@@ -211,14 +229,17 @@ namespace SlideMeister.Control
         {
             if (_backgroundImage != null)
             {
-                var backgroundPosition = ScaleToRect(0, 0, 1.0, 1.0);
+                var backgroundPosition = ScaleToRect(
+                    DoubleWithUnit.ToPercentage(0), 
+                    DoubleWithUnit.ToPercentage(0),
+                    DoubleWithUnit.ToPercentage(1.0),
+                    DoubleWithUnit.ToPercentage(1.0));
                 Canvas.SetLeft(_backgroundImage, backgroundPosition.Left);
                 Canvas.SetTop(_backgroundImage, backgroundPosition.Top);
                 _backgroundImage.Width = backgroundPosition.Width;
                 _backgroundImage.Height = backgroundPosition.Height;
             }
-
-
+            
             foreach (var pair in ItemViews)
             {
                 var rect = ScaleToRect(

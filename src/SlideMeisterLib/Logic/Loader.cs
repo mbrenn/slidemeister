@@ -161,10 +161,10 @@ namespace SlideMeisterLib.Logic
 
                     item.Position =
                         new Rectangle(
-                            Convert.ToDouble(xValue, CultureInfo.InvariantCulture),
-                            Convert.ToDouble(yValue, CultureInfo.InvariantCulture),
-                            Convert.ToDouble(widthValue, CultureInfo.InvariantCulture),
-                            Convert.ToDouble(heightValue, CultureInfo.InvariantCulture));
+                            ConvertFromCoordinates(xValue),
+                            ConvertFromCoordinates(yValue),
+                            ConvertFromCoordinates(widthValue),
+                            ConvertFromCoordinates(heightValue));
 
                     if (itemValue.TryGetValue("rotation", out JToken rotation))
                     {
@@ -176,11 +176,47 @@ namespace SlideMeisterLib.Logic
                         item.CurrentState = item.Type.States.First(x => x.Name == defaultStateValue.ToString());
                     }
 
-
-
                     _machine.AddItem(item);
                 }
             }
+        }
+
+        /// <summary>
+        /// Converts the coordinates from JSON file to relative coordinates. 
+        /// If value ends with px, the value is taken is pixels, compared to the background image.
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        private DoubleWithUnit ConvertFromCoordinates(JToken value)
+        {
+            switch (value.Type)
+            {
+                case JTokenType.Float:
+                    return DoubleWithUnit.ToPercentage(value.Value<double>());
+
+                case JTokenType.String:
+                    var valueAsString = value.Value<string>();
+                    if (valueAsString.EndsWith("px"))
+                    {
+                        valueAsString = valueAsString.Substring(0, valueAsString.Length - 2);
+                        if (double.TryParse(valueAsString, NumberStyles.Float, CultureInfo.InvariantCulture,
+                            out double resultDouble))
+                        {
+                            return new DoubleWithUnit(resultDouble, Units.Pixel);
+                        }
+                    }
+                    else
+                    {
+                        if (double.TryParse(valueAsString, NumberStyles.Float, CultureInfo.InvariantCulture,
+                            out double resultDouble))
+                        {
+                            return new DoubleWithUnit(resultDouble, Units.Percentage);
+                        }
+                    }
+                    break;
+            }
+
+            return new DoubleWithUnit();
         }
 
         /// <summary>
