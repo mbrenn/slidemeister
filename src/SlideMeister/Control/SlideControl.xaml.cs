@@ -90,28 +90,28 @@ namespace SlideMeister.Control
             var offsetX = (totalSize.Width - newWidth) / 2;
             var offsetY = (totalSize.Height - newHeight) / 2;
 
-            var scaleTop = 
-                x.Unit == Units.Percentage ? 
-                    newWidth * x.Value + offsetX :
-                    newWidth * x.Value / OriginalBackgroundSize.Width + offsetX;
-            var scaleLeft =
+            var scaledX =
                 x.Unit == Units.Percentage
+                    ? newWidth * x.Value + offsetX
+                    : newWidth * x.Value / OriginalBackgroundSize.Width + offsetX;
+            var scaledY =
+                y.Unit == Units.Percentage
                     ? newHeight * y.Value + offsetY
                     : newHeight * y.Value / OriginalBackgroundSize.Height + offsetY;
-            var scaleWidth =
-                x.Unit == Units.Percentage ?
-                    newWidth * width.Value + offsetX :
-                    newWidth * width.Value / OriginalBackgroundSize.Width + offsetX; 
-            var scaleHeight =
-                x.Unit == Units.Percentage
-                    ? newHeight * height.Value + offsetY
-                    : newHeight * height.Value / OriginalBackgroundSize.Height + offsetY;
+            var scaledWidth =
+                width.Unit == Units.Percentage
+                    ? newWidth * width.Value
+                    : newWidth * width.Value / OriginalBackgroundSize.Width;
+            var scaledHeight =
+                height.Unit == Units.Percentage
+                    ? newHeight * height.Value
+                    : newHeight * height.Value / OriginalBackgroundSize.Height;
 
             return new Rect(
-                scaleTop,
-                scaleLeft,
-                scaleWidth,
-                scaleHeight
+                scaledX,
+                scaledY,
+                scaledWidth,
+                scaledHeight
             );
         }
 
