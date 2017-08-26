@@ -166,14 +166,13 @@ namespace SlideMeister.Control
                     _imagesForStates[state] = itemBitmap;
                 }
 
-
                 // Creates the actuatl imagesImages
                 _backgroundImage = new Image { Source = bitmap };
                 BackgroundCanvas.Children.Add(_backgroundImage);
 
                 foreach (var item in Machine.Items)
                 {
-                    var border = new Border()
+                    var border = new Border
                     {
                         BorderThickness = new Thickness(0.0),
                         BorderBrush = Brushes.Red
@@ -194,8 +193,13 @@ namespace SlideMeister.Control
             }
 
             UpdateStates();
+            UpdatePositions(PositionFlag.OnlyBackground);
+        }
 
-            UpdatePositions();
+        public enum PositionFlag
+        {
+            All,
+            OnlyBackground
         }
 
         /// <summary>
@@ -220,12 +224,14 @@ namespace SlideMeister.Control
             {
                 itemView.Image.Source = source;
             }
+
+            UpdatePosition(itemView);
         }
 
         /// <summary>
         /// Updates all positions when the window is resized
         /// </summary>
-        public void UpdatePositions()
+        public void UpdatePositions(PositionFlag flag = PositionFlag.All)
         {
             if (_backgroundImage != null)
             {
@@ -239,32 +245,56 @@ namespace SlideMeister.Control
                 _backgroundImage.Width = backgroundPosition.Width;
                 _backgroundImage.Height = backgroundPosition.Height;
             }
-            
-            foreach (var pair in ItemViews)
+
+            if (flag == PositionFlag.All)
             {
-                var rect = ScaleToRect(
-                    pair.Item.Position.X,
-                    pair.Item.Position.Y,
-                    pair.Item.Position.Width,
-                    pair.Item.Position.Height);
-
-                Canvas.SetLeft(pair.UiElement, rect.Left);
-                Canvas.SetTop(pair.UiElement, rect.Top);
-                pair.Image.Width = rect.Width;
-                pair.Image.Height = rect.Height;
-                pair.Image.HorizontalAlignment = HorizontalAlignment.Center;
-                pair.Image.VerticalAlignment = VerticalAlignment.Center;
-
-                var size = ScaleSize(
-                    new Size(pair.Image.Width, pair.Image.Height),
-                    new Size(pair.Image.Source.Width, pair.Image.Source.Height));
-
-
-                pair.Image.RenderTransform = new RotateTransform(
-                    pair.Item.Rotation,
-                    size.Width / 2,
-                    size.Height / 2);
+                foreach (var pair in ItemViews)
+                {
+                    UpdatePosition(pair);
+                }
             }
+        }
+
+        /// <summary>
+        /// Updates the position of the given item 
+        /// </summary>
+        /// <param name="pair">Item whose position shall be updated</param>
+        private void UpdatePosition(ItemView pair)
+        {
+            var width = pair.Item.Position.Width;
+            var height = pair.Item.Position.Height;
+
+            if (Math.Abs(width.Value) < 1E-7)
+            {
+                width = DoubleWithUnit.ToPixel(pair.Image.Source.Width);
+            }
+            if (Math.Abs(height.Value) < 1E-7)
+            {
+                height = DoubleWithUnit.ToPixel(pair.Image.Source.Height);
+            }
+
+            var rect = ScaleToRect(
+                pair.Item.Position.X,
+                pair.Item.Position.Y,
+                width,
+                height);
+
+            Canvas.SetLeft(pair.UiElement, rect.Left);
+            Canvas.SetTop(pair.UiElement, rect.Top);
+            pair.Image.Width = rect.Width;
+            pair.Image.Height = rect.Height;
+            pair.Image.HorizontalAlignment = HorizontalAlignment.Center;
+            pair.Image.VerticalAlignment = VerticalAlignment.Center;
+
+            var size = ScaleSize(
+                new Size(pair.Image.Width, pair.Image.Height),
+                new Size(pair.Image.Source.Width, pair.Image.Source.Height));
+
+
+            pair.Image.RenderTransform = new RotateTransform(
+                pair.Item.Rotation,
+                size.Width / 2,
+                size.Height / 2);
         }
 
         private void OnSizeChanged(object sender, SizeChangedEventArgs e)

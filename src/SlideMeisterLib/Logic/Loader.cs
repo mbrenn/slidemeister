@@ -96,16 +96,14 @@ namespace SlideMeisterLib.Logic
                     var overlayType = new OverlayType(name);
 
                     var childItem = (JObject) typeValue[name];
-
-
+                    
                     if (childItem.TryGetValue("states", out JToken statesToken))
                     {
                         foreach (var state in statesToken.Children().OfType<JProperty>())
                         {
                             var stateName = state.Name;
                             var overlayState = new OverlayState(stateName);
-
-
+                            
                             var stateValue = (JObject) statesToken[stateName];
                             if (stateValue.TryGetValue("image", out JToken imageValue))
                             {
@@ -151,20 +149,21 @@ namespace SlideMeisterLib.Logic
                     var item = new OverlayItem(foundType) { Name = itemName };
                     var hasPosition =
                         itemValue.TryGetValue("x", out JToken xValue) &
-                        itemValue.TryGetValue("y", out JToken yValue) &
-                        itemValue.TryGetValue("width", out JToken widthValue) &
-                        itemValue.TryGetValue("height", out JToken heightValue);
-                    if (!hasPosition || xValue == null || yValue == null || widthValue == null || heightValue == null)
+                        itemValue.TryGetValue("y", out JToken yValue);
+                    itemValue.TryGetValue("width", out JToken widthValue);
+                    itemValue.TryGetValue("height", out JToken heightValue);
+
+                    if (!hasPosition || xValue == null || yValue == null)
                     {
-                        throw new InvalidOperationException($"Position not found: {itemTypeValue}");
+                        throw new InvalidOperationException($"Position are not defined: {itemTypeValue}");
                     }
 
                     item.Position =
                         new Rectangle(
                             ConvertFromCoordinates(xValue),
                             ConvertFromCoordinates(yValue),
-                            ConvertFromCoordinates(widthValue),
-                            ConvertFromCoordinates(heightValue));
+                            ConvertFromCoordinates(widthValue ?? "0px"),
+                            ConvertFromCoordinates(heightValue ?? "0px"));
 
                     if (itemValue.TryGetValue("rotation", out JToken rotation))
                     {

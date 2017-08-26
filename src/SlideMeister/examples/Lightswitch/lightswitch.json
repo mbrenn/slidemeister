@@ -28,16 +28,12 @@
     "LeftSwitch": {
       "x": "172px",
       "y": "65px",
-      "width": "78px",
-      "height": "56px",
       "type": "switch",
       "defaultState": "up"
     },
     "RightSwitch": {
       "x": "423px",
       "y": "64px",
-      "width": "78px",
-      "height": "56px",
       "type": "switch",
       "rotation": 180,
       "defaultState": "down"
@@ -45,8 +41,6 @@
     "Lamp": {
       "x": "617px",
       "y": "53px",
-      "width": "80px",
-      "height": "80px",
       "type": "lamp",
       "defaultState": "on"
     }
