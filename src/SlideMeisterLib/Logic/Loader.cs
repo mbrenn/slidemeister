@@ -30,6 +30,13 @@ namespace SlideMeisterLib.Logic
 
         public static Machine LoadMachine(string filePath)
         {
+            if (!File.Exists(filePath))
+            {
+                var current = Directory.GetCurrentDirectory();
+                var path = Path.Combine(current, filePath);
+                    throw new InvalidOperationException($"The given file '{path}' does not exist. ");
+            }
+
             var jsonText = File.ReadAllText(filePath);
             var loader = new Loader(Path.GetDirectoryName(filePath));
             return loader.LoadMachineFromString(jsonText);

@@ -250,7 +250,16 @@ namespace SlideMeister
         {
             InitializeComponent();
 
-            Machine = Example.CreateMachine();
+            var args = Environment.GetCommandLineArgs();
+            if (args.Length == 2)
+            {
+                var fileToBeLoaded = args[1];
+                LoadMachineFile(fileToBeLoaded);
+            }
+            else
+            {
+                Machine = Example.CreateMachine();
+            }
 
             CreateView();
         }
@@ -292,16 +301,27 @@ namespace SlideMeister
 
             if (dlg.ShowDialog(this) == true)
             {
-                try
-                {
-                    // Load file
-                    Machine = Loader.LoadMachine(dlg.FileName);
-                    CreateView();
-                }
-                catch (Exception exc)
-                {
-                    MessageBox.Show(this, $"Exception occured: \r\n\r\n{exc.Message}");
-                }
+                var filename = dlg.FileName;
+                LoadMachineFile(filename);
+            }
+        }
+
+        /// <summary>
+        /// Loads the machinefile as specified in the filename. 
+        /// Will show a messagebox in case of an exception
+        /// </summary>
+        /// <param name="filename">File to be loaded</param>
+        private void LoadMachineFile(string filename)
+        {
+            try
+            {
+                // Load file
+                Machine = Loader.LoadMachine(filename);
+                CreateView();
+            }
+            catch (Exception exc)
+            {
+                MessageBox.Show(this, $"Exception occured: \r\n\r\n{exc.Message}");
             }
         }
 
