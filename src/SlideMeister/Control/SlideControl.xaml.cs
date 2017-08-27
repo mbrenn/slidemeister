@@ -155,7 +155,7 @@ namespace SlideMeister.Control
                 var path = System.IO.Path.Combine(Environment.CurrentDirectory, Machine.BackgroundImageUrl);
                 var bitmap = new BitmapImage(new Uri(path));
                 _ratioWidthToHeight = bitmap.Width / bitmap.Height;
-                OriginalBackgroundSize = new Size(bitmap.Width, bitmap.Height);
+                OriginalBackgroundSize = new Size(bitmap.PixelWidth, bitmap.PixelHeight);
 
                 var states = Machine.Items.SelectMany(x => x.Type.States).Distinct();
                 foreach (var state in states)
@@ -266,11 +266,11 @@ namespace SlideMeister.Control
 
             if (Math.Abs(width.Value) < 1E-7)
             {
-                width = DoubleWithUnit.ToPixel(pair.Image.Source.Width);
+                width = DoubleWithUnit.ToPixel(((BitmapImage)pair.Image.Source).PixelWidth);
             }
             if (Math.Abs(height.Value) < 1E-7)
             {
-                height = DoubleWithUnit.ToPixel(pair.Image.Source.Height);
+                height = DoubleWithUnit.ToPixel(((BitmapImage)pair.Image.Source).PixelHeight);
             }
 
             var rect = ScaleToRect(
