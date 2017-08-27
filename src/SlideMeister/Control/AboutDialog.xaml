@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="About" Width="400" WindowStartupLocation="CenterOwner" SizeToContent="Height" >
     <StackPanel Margin="10" HorizontalAlignment="Center">
-        <TextBlock HorizontalAlignment="Center" FontWeight="Bold">Slide Meister</TextBlock>
+        <TextBlock HorizontalAlignment="Center" FontWeight="Bold" x:Name="ApplicationTitle">Slide Meister</TextBlock>
         <TextBlock HorizontalAlignment="Center">Author: <Hyperlink NavigateUri="mailto:brenn@depon.net">Martin Brenn</Hyperlink></TextBlock>
         <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap">This application may be distributed for free. I'd also take free beer. </TextBlock>
         <TextBlock HorizontalAlignment="Center">
