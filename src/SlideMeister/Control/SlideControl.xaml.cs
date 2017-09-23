@@ -30,7 +30,7 @@ namespace SlideMeister.Control
         /// <summary>
         /// Stores a dictionary of images which are loaded by the states
         /// </summary>
-        private readonly Dictionary<OverlayState, BitmapImage> _imagesForStates = new Dictionary<OverlayState, BitmapImage>();
+        private readonly Dictionary<OverlayState, UiElementFactory> _imagesForStates = new Dictionary<OverlayState, UiElementFactory>();
 
         /// <summary>
         /// Stores the background image being used for the presentation
@@ -203,13 +203,10 @@ namespace SlideMeister.Control
                 var states = Machine.Items.SelectMany(x => x.Type.States).Distinct();
                 foreach (var state in states)
                 {
-                    path = System.IO.Path.Combine(Environment.CurrentDirectory, state.ImageUrl);
-                    var itemBitmap = new BitmapImage(new Uri(path));
-
-                    _imagesForStates[state] = itemBitmap;
+                    _imagesForStates[state] = new UiElementFactory(state);
                 }
 
-                // Creates the actuatl imagesImages
+                // Creates the actual image
                 _backgroundImage = new Image { Source = bitmap };
                 BackgroundCanvas.Children.Add(_backgroundImage);
 
@@ -217,31 +214,41 @@ namespace SlideMeister.Control
                 {
                     var border = new Border
                     {
-                        BorderThickness = new Thickness(0.0),
-                        BorderBrush = Brushes.Red
+                        BorderBrush = Brushes.Red,
+                        BorderThickness = new Thickness(0.0)
                     };
 
-                    var imageForItem = new Image();
-                    border.Child = imageForItem;
+                    var viewbox = new Viewbox
+                    {
+                        Stretch = Stretch.Uniform
+                    };
+
+                    border.Child = viewbox;
 
                     BackgroundCanvas.Children.Add(border);
                     var itemView = new ItemView
                     {
                         Item = item,
-                        UiElement = border,
-                        Image = imageForItem
+                        UiElement = border
                     };
                     ItemViews.Add(itemView);
                 }
             }
 
             UpdateStates();
-            UpdatePositions(PositionFlag.OnlyBackground);
+            UpdateView(PositionFlag.OnlyBackground);
         }
 
         public enum PositionFlag
         {
-            All,
+            /// <summary>
+            /// Defines that not only the background, but also the items will be positioned
+            /// </summary>
+            AlsoItems,
+
+            /// <summary>
+            /// Defines that only the background shall be positioned
+            /// </summary>
             OnlyBackground
         }
 
@@ -263,18 +270,22 @@ namespace SlideMeister.Control
         public void UpdateState(ItemView itemView)
         {
             var state = itemView.Item.CurrentState;
-            if (_imagesForStates.TryGetValue(state, out BitmapImage source))
+            if (_imagesForStates.TryGetValue(state, out var elementFactory))
             {
-                itemView.Image.Source = source;
+                // Sets the factory being used for the element
+                itemView.Factory = elementFactory;
+
+                var border = (Border) itemView.UiElement;
+                ((Viewbox) border.Child).Child = elementFactory.CreateUiElement(this);
             }
 
-            UpdatePosition(itemView);
+            UpdateView(itemView);
         }
 
         /// <summary>
         /// Updates all positions when the window is resized
         /// </summary>
-        public void UpdatePositions(PositionFlag flag = PositionFlag.All)
+        public void UpdateView(PositionFlag flag = PositionFlag.AlsoItems)
         {
             if (_backgroundImage != null)
             {
@@ -289,31 +300,31 @@ namespace SlideMeister.Control
                 _backgroundImage.Height = backgroundPosition.Height;
             }
 
-            if (flag == PositionFlag.All)
+            if (flag == PositionFlag.AlsoItems)
             {
                 foreach (var pair in ItemViews)
                 {
-                    UpdatePosition(pair);
+                    UpdateView(pair);
                 }
             }
         }
 
         /// <summary>
-        /// Updates the position of the given item 
+        /// Updates the view of the given item 
         /// </summary>
         /// <param name="pair">Item whose position shall be updated</param>
-        private void UpdatePosition(ItemView pair)
+        private void UpdateView(ItemView pair)
         {
             var width = pair.Item.Position.Width;
             var height = pair.Item.Position.Height;
 
             if (Math.Abs(width.Value) < 1E-7)
             {
-                width = DoubleWithUnit.ToPixel(((BitmapImage)pair.Image.Source).PixelWidth);
+                width = DoubleWithUnit.ToPixel(pair.Factory.NativeSize.Width);
             }
             if (Math.Abs(height.Value) < 1E-7)
             {
-                height = DoubleWithUnit.ToPixel(((BitmapImage)pair.Image.Source).PixelHeight);
+                height = DoubleWithUnit.ToPixel(pair.Factory.NativeSize.Height);
             }
 
             var rect = ScaleToRect(
@@ -324,25 +335,26 @@ namespace SlideMeister.Control
 
             Canvas.SetLeft(pair.UiElement, rect.Left);
             Canvas.SetTop(pair.UiElement, rect.Top);
-            pair.Image.Width = rect.Width;
-            pair.Image.Height = rect.Height;
-            pair.Image.HorizontalAlignment = HorizontalAlignment.Center;
-            pair.Image.VerticalAlignment = VerticalAlignment.Center;
-
-            var size = ScaleSize(
-                new Size(pair.Image.Width, pair.Image.Height),
-                new Size(pair.Image.Source.Width, pair.Image.Source.Height));
+            pair.UiElement.Width = rect.Width;
+            pair.UiElement.Height = rect.Height;
+            pair.UiElement.HorizontalAlignment = HorizontalAlignment.Center;
+            pair.UiElement.VerticalAlignment = VerticalAlignment.Center;
 
 
-            pair.Image.RenderTransform = new RotateTransform(
+            pair.UiElement.RenderTransform = new RotateTransform(
                 pair.Item.Rotation,
-                size.Width / 2,
-                size.Height / 2);
+                rect.Width / 2,
+                rect.Height / 2);
         }
 
+        /// <summary>
+        /// Called, when the user or another application changed the size of the element
+        /// </summary>
+        /// <param name="sender">Sender of the event</param>
+        /// <param name="e">Event arguments being used for sizing</param>
         private void OnSizeChanged(object sender, SizeChangedEventArgs e)
         {
-            UpdatePositions();
+            UpdateView();
         }
     }
 }

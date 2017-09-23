@@ -12,13 +12,13 @@ namespace SlideMeister.ViewModels
         public OverlayItem Item { get; set; }
 
         /// <summary>
-        /// Gets or sets the image being associated to the given item
-        /// </summary>
-        public Image Image { get; set; } 
-
-        /// <summary>
         /// Gets or sets the ui element hosting the item as a complete element
         /// </summary>
-        public UIElement UiElement { get; set; }
+        public FrameworkElement UiElement { get; set; }
+
+        /// <summary>
+        /// Gets or sets the factory being used for the element
+        /// </summary>
+        public UiElementFactory Factory { get; set; }
     }
 }

@@ -146,6 +146,7 @@
     </Compile>
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="ViewModels\ItemView.cs" />
+    <Compile Include="ViewModels\UiElementFactory.cs" />
     <Page Include="Control\AboutDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
