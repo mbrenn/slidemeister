@@ -55,15 +55,63 @@ namespace SlideMeister.Control
         /// </summary>
         public List<ItemView> ItemViews { get; } = new List<ItemView>();
 
-        /// <summary>
-        /// Gets the size of the window for the architecture
-        /// </summary>
-        /// <returns></returns>
-        private Size GetArchitectureSize()
+
+        private void GetSizeAndOffsetOfRenderedBackground(out double newHeight, out double newWidth, out double offsetX, out double offsetY)
         {
-            return new Size(
+            var totalSize = new Size(
                 BackgroundCanvas.ActualWidth,
                 BackgroundCanvas.ActualHeight);
+
+            newHeight = Math.Min(totalSize.Height, totalSize.Width / _ratioWidthToHeight);
+            newWidth = newHeight * _ratioWidthToHeight;
+
+            offsetX = (totalSize.Width - newWidth) / 2;
+            offsetY = (totalSize.Height - newHeight) / 2;
+        }
+
+        /// <summary>
+        /// Scales the position of the element
+        /// </summary>
+        /// <param name="x">X-Coordinate to be scaled</param>
+        /// <param name="y">Y-Coordinate to be scaled</param>
+        /// <returns></returns>
+        public (double resultX, double resultY) ScalePosition(DoubleWithUnit x, DoubleWithUnit y)
+        {
+            GetSizeAndOffsetOfRenderedBackground(out var newHeight, out var newWidth, out var offsetX, out var offsetY);
+
+            var scaledX =
+                x.Unit == Units.Percentage
+                    ? newWidth * x.Value + offsetX
+                    : newWidth * x.Value / OriginalBackgroundSize.Width + offsetX;
+            var scaledY =
+                y.Unit == Units.Percentage
+                    ? newHeight * y.Value + offsetY
+                    : newHeight * y.Value / OriginalBackgroundSize.Height + offsetY;
+
+            return (scaledX, scaledY);
+        }
+
+
+        /// <summary>
+        /// Scales the size of the element
+        /// </summary>
+        /// <param name="x">X-Coordinate to be scaled</param>
+        /// <param name="y">Y-Coordinate to be scaled</param>
+        /// <returns>Scaled size without offset change</returns>
+        public (double resultX, double resultY) ScaleSize(DoubleWithUnit x, DoubleWithUnit y)
+        {
+            GetSizeAndOffsetOfRenderedBackground(out var newHeight, out var newWidth, out var _, out var _);
+
+            var scaledX =
+                x.Unit == Units.Percentage
+                    ? newWidth * x.Value
+                    : newWidth * x.Value / OriginalBackgroundSize.Width;
+            var scaledY =
+                y.Unit == Units.Percentage
+                    ? newHeight * y.Value
+                    : newHeight * y.Value / OriginalBackgroundSize.Height;
+
+            return (scaledX, scaledY);
         }
 
 
@@ -82,13 +130,8 @@ namespace SlideMeister.Control
                 return new Rect(0, 0, 0, 0);
             }
 
-            var totalSize = GetArchitectureSize();
 
-            var newHeight = Math.Min(totalSize.Height, totalSize.Width / _ratioWidthToHeight);
-            var newWidth = newHeight * _ratioWidthToHeight;
-
-            var offsetX = (totalSize.Width - newWidth) / 2;
-            var offsetY = (totalSize.Height - newHeight) / 2;
+            GetSizeAndOffsetOfRenderedBackground(out var newHeight, out var newWidth, out var offsetX, out var offsetY);
 
             var scaledX =
                 x.Unit == Units.Percentage

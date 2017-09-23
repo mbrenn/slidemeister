@@ -11,7 +11,7 @@
         <TextBlock HorizontalAlignment="Center">Author: <Hyperlink NavigateUri="mailto:brenn@depon.net">Martin Brenn</Hyperlink></TextBlock>
         <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap">This application may be distributed for free. I'd also take free beer. </TextBlock>
         <TextBlock HorizontalAlignment="Center">
-            <Hyperlink NavigateUri="http://www.depon.net">
+            Website: <Hyperlink NavigateUri="http://www.depon.net">
             http://www.depon.net/</Hyperlink>
         </TextBlock>
         <TextBlock HorizontalAlignment="Center">
