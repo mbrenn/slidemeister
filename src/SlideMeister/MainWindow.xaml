@@ -18,6 +18,7 @@
         <Ribbon Grid.ColumnSpan="2">
             <Ribbon.ApplicationMenu>
                 <RibbonApplicationMenu>
+                    <RibbonApplicationMenuItem Header="Open" Click="FileOpen_Click" ImageSource="assets/images/document_flat-open.png"></RibbonApplicationMenuItem>
                     <RibbonApplicationMenuItem
                     Header="Close Window" ImageSource="assets/images/close_window.png" Click="Close_Click"/>
                 </RibbonApplicationMenu>
@@ -50,7 +51,7 @@
                         <ListView x:Name="StateButtonsView">
                             <ListView.View>
                                 <GridView>
-                                <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}" Width="Auto"></GridViewColumn>
+                                <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}" Width="100px"></GridViewColumn>
                                 <GridViewColumn Header="State" DisplayMemberBinding="{Binding State}" Width="Auto"></GridViewColumn>
                                     <GridViewColumn Header="Next">
                                         <GridViewColumn.CellTemplate>
