@@ -34,7 +34,8 @@ namespace SlideMeister.ViewModels
 
         public UIElement CreateUiElement(SlideControl element)
         {
-            return new Image { Source = _bitmapImage };
+            var image = new Image { Source = _bitmapImage };
+            return image;
         }
 
     }

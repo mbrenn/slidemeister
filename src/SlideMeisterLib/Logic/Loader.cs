@@ -250,13 +250,13 @@ namespace SlideMeisterLib.Logic
                         var foundItem = _machine.Items.FirstOrDefault(x => x.Name == transitionName);
                         if (foundItem == null)
                         {
-                            throw new InvalidOperationException($"Object not found {transitionName}");
+                            throw new InvalidOperationException($"Item not found '{transitionName}' in transition '{transitionSetName}'");
                         }
 
                         var foundState = foundItem.Type.States.FirstOrDefault(x => x.Name == stateValue);
                         if (foundState == null)
                         {
-                            throw new InvalidOperationException($"Object not found {transitionName}");
+                            throw new InvalidOperationException($"State '{stateValue}' not found for '{transitionName}' in transition '{transitionSetName}'");
                         }
 
                         var transition = new Transition(foundItem, foundState);
