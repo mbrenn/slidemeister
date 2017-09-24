@@ -179,7 +179,7 @@ namespace SlideMeisterLib.Logic
 
                     if (itemValue.TryGetValue("defaultState", out JToken defaultStateValue))
                     {
-                        item.CurrentState = item.Type.States.First(x => x.Name == defaultStateValue.ToString());
+                        item.DefaultState = item.CurrentState = item.Type.States.First(x => x.Name == defaultStateValue.ToString());
                     }
 
                     _machine.AddItem(item);

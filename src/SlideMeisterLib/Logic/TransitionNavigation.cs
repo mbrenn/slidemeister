@@ -48,7 +48,7 @@ namespace SlideMeisterLib.Logic
             // Goes through each item to initialize the machine and the current step
             foreach (var item in _machine.Items)
             {
-                item.CurrentState = item.Type.DefaultState;
+                item.CurrentState = item.DefaultState;
             }
 
             // Switches to the first item and applies the transition
@@ -57,6 +57,7 @@ namespace SlideMeisterLib.Logic
             {
                 throw new InvalidOperationException("The given sequence has no steps, so navigation is not possible.");
             }
+
             _machineLogic.ApplyTransition(CurrentStep.Transitions);
         }
 

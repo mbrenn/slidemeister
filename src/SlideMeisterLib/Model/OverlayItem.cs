@@ -10,6 +10,7 @@ namespace SlideMeisterLib.Model
         private Rectangle _position;
         private OverlayType _type;
         private OverlayState _currentState;
+        private OverlayState _defaultState;
         private double _rotation;
 
         /// <summary>
@@ -69,6 +70,20 @@ namespace SlideMeisterLib.Model
             {
                 if (value.Equals(_rotation)) return;
                 _rotation = value;
+                OnPropertyChanged();
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the default state for the element
+        /// </summary>
+        public OverlayState DefaultState
+        {
+            get => _defaultState;
+            set
+            {
+                if (value.Equals(_defaultState)) return;
+                _defaultState = value;
                 OnPropertyChanged();
             }
         }
