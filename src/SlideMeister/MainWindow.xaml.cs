@@ -339,6 +339,9 @@ namespace SlideMeister
 
                 StoreCurrentMachineIntoPng(filename);
             }
+
+
+            MessageBox.Show(this, "Image saved.");
         }
 
         private void SaveSequences_OnClick(object sender, RoutedEventArgs e)
@@ -346,6 +349,7 @@ namespace SlideMeister
             var dlg = new FolderBrowserDialog();
             if (dlg.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
+                var total = 0;
                 foreach (var sequence in Machine.Sequences)
                 {
                     var navigation = new TransitionNavigation(Machine, sequence);
@@ -371,9 +375,12 @@ namespace SlideMeister
                         }
 
                         n++;
+                        total++;
 
                     } while (true);
                 }
+
+                MessageBox.Show(this, $"{total} images saved.");
             }
         }
 
