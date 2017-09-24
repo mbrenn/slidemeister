@@ -7,8 +7,20 @@ namespace SlideMeisterLib.Model
 {
     public class TransitionSequenceStep : INotifyPropertyChanged
     {
+        private string _name;
         private TimeSpan _duration;
         private TransitionSet _transitions;
+
+        public string Name
+        {
+            get => _name;
+            set
+            {
+                if (value.Equals(_name)) return;
+                _name = value;
+                OnPropertyChanged();
+            }
+        }
 
         /// <summary>
         /// Gets or sets the duration of the current step
@@ -50,17 +62,20 @@ namespace SlideMeisterLib.Model
 
         public TransitionSequenceStep(string name, params Transition[] transition)
         {
+            Name = name;
             Transitions = new TransitionSet(name, transition);
         }
 
         public TransitionSequenceStep(string name, TimeSpan duration, params Transition[] transition)
         {
+            Name = name;
             Duration = duration;
             Transitions = new TransitionSet(name, transition);
         }
 
-        public TransitionSequenceStep(TimeSpan duration, TransitionSet set)
+        public TransitionSequenceStep(string name, TimeSpan duration, TransitionSet set)
         {
+            Name = name;
             Duration = duration;
             Transitions = set;
         }

@@ -297,7 +297,7 @@ namespace SlideMeisterLib.Logic
                         }
 
                         var transition = _machine.Transitions.FirstOrDefault(x => x.Name == transitionValue.ToString());
-                        var step = new TransitionSequenceStep(TimeSpan.FromSeconds(Convert.ToDouble(durationValue, CultureInfo.InvariantCulture)), transition);
+                        var step = new TransitionSequenceStep(sequenceStepName, TimeSpan.FromSeconds(Convert.ToDouble(durationValue, CultureInfo.InvariantCulture)), transition);
                         sequence.Steps.Add(step);
                     }
 

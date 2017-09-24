@@ -343,15 +343,7 @@ namespace SlideMeister
 
         private void SaveSequences_OnClick(object sender, RoutedEventArgs e)
         {
-            var dlg2 = new SaveFileDialog
-            {
-                AddExtension = true,
-                Filter = "PNG-File (*.png)|*.png;*.slidemeister",
-                
-            };
             var dlg = new FolderBrowserDialog();
-
-
             if (dlg.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
                 foreach (var sequence in Machine.Sequences)
@@ -361,9 +353,10 @@ namespace SlideMeister
 
                     var directory = dlg.SelectedPath;
 
+                    var n = 1;
                     do
                     {
-                        var filename = $"{sequence.Name} - {navigation.CurrentStep.Transitions.Name}.png";
+                        var filename = $"{sequence.Name} - {n} - {navigation.CurrentStep.Name}.png";
                         var validFilename = new string(filename.Where(ch => !InvalidFileNameChars.Contains(ch)).ToArray());
                         var filePath = Path.Combine(
                             directory ?? ".",
@@ -376,6 +369,8 @@ namespace SlideMeister
                         {
                             break;
                         }
+
+                        n++;
 
                     } while (true);
                 }
@@ -419,9 +414,9 @@ namespace SlideMeister
 
         void SaveUsingEncoder(FrameworkElement visual, string fileName, BitmapEncoder encoder)
         {
-            RenderTargetBitmap bitmap = new RenderTargetBitmap((int)visual.ActualWidth, (int)visual.ActualHeight, 96, 96, PixelFormats.Pbgra32);
+            var bitmap = new RenderTargetBitmap((int)visual.ActualWidth, (int)visual.ActualHeight, 96, 96, PixelFormats.Pbgra32);
             bitmap.Render(visual);
-            BitmapFrame frame = BitmapFrame.Create(bitmap);
+            var frame = BitmapFrame.Create(bitmap);
             encoder.Frames.Add(frame);
 
             
@@ -433,8 +428,10 @@ namespace SlideMeister
 
         private void About_Click(object sender, RoutedEventArgs e)
         {
-            var about = new AboutDialog();
-            about.Owner = this;
+            var about = new AboutDialog
+            {
+                Owner = this
+            };
             about.ShowDialog();
         }
 
