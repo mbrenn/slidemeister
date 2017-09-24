@@ -236,10 +236,10 @@ namespace SlideMeister.Control
             }
 
             UpdateStates();
-            UpdateView(PositionFlag.OnlyBackground);
+            UpdateView(UpdateViewSelection.OnlyBackground);
         }
 
-        public enum PositionFlag
+        public enum UpdateViewSelection
         {
             /// <summary>
             /// Defines that not only the background, but also the items will be positioned
@@ -285,7 +285,7 @@ namespace SlideMeister.Control
         /// <summary>
         /// Updates all positions when the window is resized
         /// </summary>
-        public void UpdateView(PositionFlag flag = PositionFlag.AlsoItems)
+        public void UpdateView(UpdateViewSelection flag = UpdateViewSelection.AlsoItems)
         {
             if (_backgroundImage != null)
             {
@@ -300,7 +300,7 @@ namespace SlideMeister.Control
                 _backgroundImage.Height = backgroundPosition.Height;
             }
 
-            if (flag == PositionFlag.AlsoItems)
+            if (flag == UpdateViewSelection.AlsoItems)
             {
                 foreach (var pair in ItemViews)
                 {
