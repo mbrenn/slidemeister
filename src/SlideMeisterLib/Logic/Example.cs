@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using SlideMeisterLib.Model;
 
 namespace SlideMeisterLib.Logic
@@ -58,7 +59,7 @@ namespace SlideMeisterLib.Logic
 
             foreach (var step in sequence.Steps)
             {
-                machine.Transitions.Add(step.Transitions);
+                machine.Transitions.Add(step.Transitions.First());
             }
 
             return machine;

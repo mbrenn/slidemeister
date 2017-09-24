@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using SlideMeisterLib.Annotations;
@@ -9,7 +11,7 @@ namespace SlideMeisterLib.Model
     {
         private string _name;
         private TimeSpan _duration;
-        private TransitionSet _transitions;
+        private ObservableCollection<TransitionSet> _transitionSets = new ObservableCollection<TransitionSet>();
 
         public string Name
         {
@@ -39,13 +41,13 @@ namespace SlideMeisterLib.Model
         /// <summary>
         /// Gets or sets the transitions within the step
         /// </summary>
-        public TransitionSet Transitions
+        public ObservableCollection<TransitionSet> Transitions
         {
-            get => _transitions;
+            get => _transitionSets;
             set
             {
-                if (Equals(value, _transitions)) return;
-                _transitions = value;
+                if (Equals(value, _transitionSets)) return;
+                _transitionSets = value;
                 OnPropertyChanged();
             }
         }
@@ -63,21 +65,21 @@ namespace SlideMeisterLib.Model
         public TransitionSequenceStep(string name, params Transition[] transition)
         {
             Name = name;
-            Transitions = new TransitionSet(name, transition);
+            Transitions.Add(new TransitionSet(name, transition));
         }
 
         public TransitionSequenceStep(string name, TimeSpan duration, params Transition[] transition)
         {
             Name = name;
             Duration = duration;
-            Transitions = new TransitionSet(name, transition);
+            Transitions.Add(new TransitionSet(name, transition));
         }
 
         public TransitionSequenceStep(string name, TimeSpan duration, TransitionSet set)
         {
             Name = name;
             Duration = duration;
-            Transitions = set;
+            Transitions.Add(set);
         }
 
         public override string ToString()

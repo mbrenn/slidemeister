@@ -58,7 +58,10 @@ namespace SlideMeisterLib.Logic
                 throw new InvalidOperationException("The given sequence has no steps, so navigation is not possible.");
             }
 
-            _machineLogic.ApplyTransition(CurrentStep.Transitions);
+            foreach (var transition in CurrentStep.Transitions)
+            {
+                _machineLogic.ApplyTransition(transition);
+            }
         }
 
         /// <summary>
@@ -84,7 +87,11 @@ namespace SlideMeisterLib.Logic
 
 
             CurrentStep = _sequence.Steps[pos];
-            _machineLogic.ApplyTransition(CurrentStep.Transitions);
+
+            foreach (var transition in CurrentStep.Transitions)
+            {
+                _machineLogic.ApplyTransition(transition);
+            }
 
             return true;
         }
@@ -111,7 +118,11 @@ namespace SlideMeisterLib.Logic
             }
 
             CurrentStep = _sequence.Steps[pos];
-            _machineLogic.ApplyTransition(CurrentStep.Transitions);
+
+            foreach (var transition in CurrentStep.Transitions)
+            {
+                _machineLogic.ApplyTransition(transition);
+            }
 
             return true;
 

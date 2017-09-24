@@ -177,7 +177,7 @@ namespace SlideMeister
 
             public string Name => Sequence.Name;
 
-            public string Transition => Navigation?.CurrentStep == null ? "None" : Navigation.CurrentStep.Transitions.Name;
+            public string Transition => Navigation?.CurrentStep == null ? "None" : Navigation.CurrentStep.Name;
 
             public ActionCommand Initialize { get; }
             public ActionCommand Previous { get; }

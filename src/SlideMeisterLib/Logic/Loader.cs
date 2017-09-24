@@ -296,8 +296,24 @@ namespace SlideMeisterLib.Logic
                             throw new InvalidOperationException($"Transition with value {sequenceStepName} does not have transition or duration");
                         }
 
-                        var transition = _machine.Transitions.FirstOrDefault(x => x.Name == transitionValue.ToString());
-                        var step = new TransitionSequenceStep(sequenceStepName, TimeSpan.FromSeconds(Convert.ToDouble(durationValue, CultureInfo.InvariantCulture)), transition);
+                        var step = new TransitionSequenceStep(sequenceStepName, TimeSpan.FromSeconds(Convert.ToDouble(durationValue, CultureInfo.InvariantCulture)));
+                        if (transitionValue.Type == JTokenType.Array)
+                        {
+                            foreach (var subToken in transitionValue.Children())
+                            {
+                                var transition =
+                                    _machine.Transitions.FirstOrDefault(x => x.Name == subToken.ToString());
+                                step.Transitions.Add(transition);
+                            }
+                        }
+                        else
+                        {
+                            var transition = _machine.Transitions.FirstOrDefault(x => x.Name == transitionValue.ToString());
+                            step.Transitions.Add(transition);
+
+                        }
+
+
                         sequence.Steps.Add(step);
                     }
 
