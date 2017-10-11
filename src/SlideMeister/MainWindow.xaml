@@ -41,7 +41,13 @@
             </RibbonTab>
         </Ribbon>
         <Border Grid.Row="1" Grid.Column="0" BorderThickness="1" Padding="5" BorderBrush="Black">
-            <control:SlideControl x:Name="SlideCanvas"/>
+            <control:SlideControl x:Name="SlideCanvas">
+                <control:SlideControl.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Click="CopyToClipboard_OnClick">Copy to Clipboard</MenuItem>
+                    </ContextMenu>
+                </control:SlideControl.ContextMenu>
+                </control:SlideControl>
         </Border>
         <Border Grid.Row="1" Grid.Column="1" BorderThickness="1" Padding="5" BorderBrush="Black"
                 Background="Orange">

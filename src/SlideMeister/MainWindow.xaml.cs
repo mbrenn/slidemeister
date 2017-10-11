@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using SlideMeisterLib.Model;
 using System.IO;
@@ -9,8 +8,6 @@ using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Controls.Ribbon;
 using System.Windows.Forms;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -19,10 +16,9 @@ using SlideMeister.Control;
 using SlideMeister.Helper;
 using SlideMeister.ViewModels;
 using SlideMeisterLib.Logic;
-using Button = System.Windows.Controls.Button;
+using Clipboard = System.Windows.Clipboard;
 using MessageBox = System.Windows.MessageBox;
 using OpenFileDialog = Microsoft.Win32.OpenFileDialog;
-using Orientation = System.Windows.Controls.Orientation;
 using SaveFileDialog = Microsoft.Win32.SaveFileDialog;
 
 namespace SlideMeister
@@ -390,6 +386,13 @@ namespace SlideMeister
         /// <param name="filename">Filename to be stored</param>
         private void StoreCurrentMachineIntoPng(string filename)
         {
+            var slideControl = CreateVisualForExport();
+
+            SaveToPng(slideControl, filename);
+        }
+
+        private SlideControl CreateVisualForExport()
+        {
             var size = new Size(SlideCanvas.BackgroundSize.Width, SlideCanvas.BackgroundSize.Height);
 
             // Load file
@@ -399,14 +402,13 @@ namespace SlideMeister
                 Height = size.Height,
                 Machine = Machine
             };
-            
+
             slideControl.Measure(size);
             slideControl.Arrange(new Rect(size));
             slideControl.CreateView();
             slideControl.BackgroundCanvas.Measure(size);
             slideControl.BackgroundCanvas.Arrange(new Rect(size));
-
-            SaveToPng(slideControl, filename);
+            return slideControl;
         }
 
         void SaveToPng(FrameworkElement visual, string fileName)
@@ -472,7 +474,14 @@ namespace SlideMeister
                     MessageBox.Show(this, $"Exception occured: \r\n\r\n{exc.Message}");
                 }
             }
+        }
 
+        private void CopyToClipboard_OnClick(object sender, RoutedEventArgs e)
+        {
+            var visual = CreateVisualForExport();
+            var bitmap = new RenderTargetBitmap((int)visual.ActualWidth, (int)visual.ActualHeight, 96, 96, PixelFormats.Pbgra32);
+            bitmap.Render(visual);
+            Clipboard.SetImage(bitmap);
         }
     }
 }
