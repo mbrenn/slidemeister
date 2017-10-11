@@ -482,6 +482,8 @@ namespace SlideMeister
             var bitmap = new RenderTargetBitmap((int)visual.ActualWidth, (int)visual.ActualHeight, 96, 96, PixelFormats.Pbgra32);
             bitmap.Render(visual);
             Clipboard.SetImage(bitmap);
+
+            MessageBox.Show("Copied to clipbard", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
         }
     }
 }

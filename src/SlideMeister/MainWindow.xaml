@@ -32,6 +32,7 @@
 
                 </RibbonGroup>
                 <RibbonGroup Header="Export">
+                    <RibbonButton Label="Copy to Clipboard" Click="CopyToClipboard_OnClick" LargeImageSource="assets/images/clipboard_copy.png"></RibbonButton>
                     <RibbonButton Label="Save Image" Click="SaveImage_OnClick" LargeImageSource="assets/images/picture-export.png"></RibbonButton>
                     <RibbonButton Label="Save all sequences" Click="SaveSequences_OnClick" LargeImageSource="assets/images/pictures-export.png"></RibbonButton>
                 </RibbonGroup>
