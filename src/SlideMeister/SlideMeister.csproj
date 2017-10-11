@@ -278,5 +278,8 @@
   <ItemGroup>
     <Resource Include="assets\images\clipboard_copy.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="assets\images\clipboard_copy_small.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

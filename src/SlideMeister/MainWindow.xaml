@@ -45,7 +45,11 @@
             <control:SlideControl x:Name="SlideCanvas">
                 <control:SlideControl.ContextMenu>
                     <ContextMenu>
-                        <MenuItem Click="CopyToClipboard_OnClick">Copy to Clipboard</MenuItem>
+                        <MenuItem Click="CopyToClipboard_OnClick" Header="Copy to Clipboard">
+                            <MenuItem.Icon>
+                                <Image Source="assets/images/clipboard_copy_small.png"></Image>
+                            </MenuItem.Icon>
+                        </MenuItem>
                     </ContextMenu>
                 </control:SlideControl.ContextMenu>
                 </control:SlideControl>
