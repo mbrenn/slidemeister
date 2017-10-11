@@ -6,7 +6,5 @@
              xmlns:local="clr-namespace:SlideMeister.Control"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300" SizeChanged="OnSizeChanged">
-    <Canvas x:Name="BackgroundCanvas">
-            
-    </Canvas>
+    <Canvas x:Name="BackgroundCanvas"></Canvas>
 </UserControl>

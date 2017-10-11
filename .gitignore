@@ -167,7 +167,9 @@ icons
 /nuget-packages/All
 /src/scripts/assembly/*.pdb
 /src/scripts/assembly/*.dll
+/src/SlideMeister/assets/images/*.png
 
 project.lock.json
 *.js.map
 /src/DatenMeister.Web.Application/App_Data/Database
+*.ide

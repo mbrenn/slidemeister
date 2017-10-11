@@ -32,6 +32,7 @@
 
                 </RibbonGroup>
                 <RibbonGroup Header="Export">
+                    <RibbonButton Label="Copy to Clipboard" Click="CopyToClipboard_OnClick" LargeImageSource="assets/images/clipboard_copy.png"></RibbonButton>
                     <RibbonButton Label="Save Image" Click="SaveImage_OnClick" LargeImageSource="assets/images/picture-export.png"></RibbonButton>
                     <RibbonButton Label="Save all sequences" Click="SaveSequences_OnClick" LargeImageSource="assets/images/pictures-export.png"></RibbonButton>
                 </RibbonGroup>
@@ -41,7 +42,17 @@
             </RibbonTab>
         </Ribbon>
         <Border Grid.Row="1" Grid.Column="0" BorderThickness="1" Padding="5" BorderBrush="Black">
-            <control:SlideControl x:Name="SlideCanvas"/>
+            <control:SlideControl x:Name="SlideCanvas">
+                <control:SlideControl.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Click="CopyToClipboard_OnClick" Header="Copy to Clipboard">
+                            <MenuItem.Icon>
+                                <Image Source="assets/images/clipboard_copy_small.png"></Image>
+                            </MenuItem.Icon>
+                        </MenuItem>
+                    </ContextMenu>
+                </control:SlideControl.ContextMenu>
+                </control:SlideControl>
         </Border>
         <Border Grid.Row="1" Grid.Column="1" BorderThickness="1" Padding="5" BorderBrush="Black"
                 Background="Orange">
