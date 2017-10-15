@@ -192,6 +192,7 @@ namespace SlideMeister
             {
                 // Load file
                 Machine = Loader.LoadMachine(filename);
+                CurrentSequenceText.Text = string.Empty;
                 CreateView();
             }
             catch (Exception exc)
@@ -242,14 +243,13 @@ namespace SlideMeister
 
                         StoreCurrentMachineIntoPng(filePath);
 
+                        n++;
+                        total++;
 
                         if (!navigation.NavigateToNext())
                         {
                             break;
                         }
-
-                        n++;
-                        total++;
 
                     } while (true);
                 }
