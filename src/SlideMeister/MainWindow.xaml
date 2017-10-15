@@ -6,6 +6,11 @@
         xmlns:local="clr-namespace:SlideMeister"
         mc:Ignorable="d"
         Title="SlideMeister" Height="700" Width="900" WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+        <Style TargetType="Button">
+            <Setter Property="Padding" Value="10,0,10,0" />
+        </Style>
+    </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
@@ -41,7 +46,8 @@
                 </RibbonGroup>
             </RibbonTab>
         </Ribbon>
-        <Border Grid.Row="1" Grid.Column="0" BorderThickness="1" Padding="5" BorderBrush="Black">
+        <Border Grid.Row="1" Grid.Column="0" BorderThickness="1" Padding="5" BorderBrush="Black" 
+                Margin="2">
             <control:SlideControl x:Name="SlideCanvas">
                 <control:SlideControl.ContextMenu>
                     <ContextMenu>
@@ -54,16 +60,32 @@
                 </control:SlideControl.ContextMenu>
                 </control:SlideControl>
         </Border>
-        <Border Grid.Row="1" Grid.Column="1" BorderThickness="1" Padding="5" BorderBrush="Black"
-                Background="Orange">
-            <TabControl>
-                <TabItem>
-                    <TabItem.Header>States</TabItem.Header>
+        <DockPanel Grid.Row="1" Grid.Column="1" >
+            <Border BorderThickness="1" Padding="5" BorderBrush="Black"
+                    Background="Orange" DockPanel.Dock="Bottom" Margin="2">
+                <StackPanel Orientation="Vertical" >
+                    <Separator></Separator>
+                    <TextBlock FontWeight="Bold" Margin="5">Sequences:</TextBlock>
+                    <ComboBox x:Name="SequenceSelection" Margin="5" SelectionChanged="SequenceSelection_SelectionChanged"></ComboBox>
+                    <TextBox x:Name="CurrentSequenceText" Margin="5" IsReadOnly="True"></TextBox>
+                    <StackPanel Orientation="Horizontal">
+                        <Button x:Name="SequenceResetButton" Click="SequenceResetButton_Click" Margin="3">Reset</Button>
+                        <Button x:Name="SequencePreviousButton" Click="SequencePreviousButton_Click" Margin="3">Previous</Button>
+                        <Button x:Name="SequenceNextButton" Click="SequenceNextButton_Click" Margin="3">Next</Button>
+                        <Button x:Name="SequencePlayButton" Click="SequencePlayButton_Click" Margin="3">Play</Button>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+            <Border BorderThickness="1" Padding="5" BorderBrush="Black"
+                    Background="Orange" DockPanel.Dock="Bottom" Margin="2">
+                <TabControl>
+                    <TabItem>
+                        <TabItem.Header>States</TabItem.Header>
                         <ListView x:Name="StateButtonsView">
                             <ListView.View>
                                 <GridView>
-                                <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}" Width="100px"></GridViewColumn>
-                                <GridViewColumn Header="State" DisplayMemberBinding="{Binding State}" Width="Auto"></GridViewColumn>
+                                    <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}" Width="100px"></GridViewColumn>
+                                    <GridViewColumn Header="State" DisplayMemberBinding="{Binding State}" Width="Auto"></GridViewColumn>
                                     <GridViewColumn Header="Next">
                                         <GridViewColumn.CellTemplate>
                                             <DataTemplate>
@@ -74,54 +96,55 @@
                                 </GridView>
                             </ListView.View>
                         </ListView>
-                </TabItem>
-                <TabItem>
-                    <TabItem.Header>Transitions</TabItem.Header>
-                    <ListView x:Name="TransitionView">
-                        <ListView.View>
-                            <GridView>
-                                <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}" Width="Auto"></GridViewColumn>
-                                <GridViewColumn Header="Switch To" Width="Auto">
-                                    <GridViewColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <Button Command="{Binding SwitchTo}">Transition</Button>
-                                        </DataTemplate>
-                                    </GridViewColumn.CellTemplate>
-                                </GridViewColumn>
-                            </GridView>
-                        </ListView.View>
-                    </ListView>
-                </TabItem>
-                <TabItem>
-                    <TabItem.Header>Sequences</TabItem.Header>
-                    <ListView x:Name="SequenceView">
-                        <ListView.View>
-                            <GridView>
-                                <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}" Width="Auto"></GridViewColumn>
-                                <GridViewColumn Header="Transition" DisplayMemberBinding="{Binding Transition}" Width="Auto"></GridViewColumn>
-                                <GridViewColumn Header="Next" Width="Auto">
-                                    <GridViewColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <StackPanel>
-                                                <Button Command="{Binding Initialize}">Initialize</Button>
-                                                <Button Command="{Binding Previous}">Previous</Button>
-                                                <Button Command="{Binding Next}">Next</Button>
-                                            </StackPanel>
-                                        </DataTemplate>
-                                    </GridViewColumn.CellTemplate>
-                                </GridViewColumn>
-                                <GridViewColumn Header="Previous" Width="Auto">
-                                    <GridViewColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <Button Command="{Binding Play}" VerticalAlignment="Top">Play</Button>
-                                        </DataTemplate>
-                                    </GridViewColumn.CellTemplate>
-                                </GridViewColumn>
-                            </GridView>
-                        </ListView.View>
-                    </ListView>
-                </TabItem>
-            </TabControl>
-        </Border>
+                    </TabItem>
+                    <TabItem>
+                        <TabItem.Header>Transitions</TabItem.Header>
+                        <ListView x:Name="TransitionView">
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}" Width="Auto"></GridViewColumn>
+                                    <GridViewColumn Header="Switch To" Width="Auto">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <Button Command="{Binding SwitchTo}">Transition</Button>
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+                    </TabItem>
+                    <TabItem>
+                        <TabItem.Header>Sequences</TabItem.Header>
+                        <ListView x:Name="SequenceView">
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}" Width="Auto"></GridViewColumn>
+                                    <GridViewColumn Header="Transition" DisplayMemberBinding="{Binding Transition}" Width="Auto"></GridViewColumn>
+                                    <GridViewColumn Header="Next" Width="Auto">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <StackPanel>
+                                                    <Button Command="{Binding Initialize}">Initialize</Button>
+                                                    <Button Command="{Binding Previous}">Previous</Button>
+                                                    <Button Command="{Binding Next}">Next</Button>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                    <GridViewColumn Header="Previous" Width="Auto">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <Button Command="{Binding Play}" VerticalAlignment="Top">Play</Button>
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+                    </TabItem>
+                </TabControl>
+            </Border>
+        </DockPanel>
     </Grid>
 </Window>

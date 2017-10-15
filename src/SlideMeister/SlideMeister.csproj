@@ -145,6 +145,9 @@
       <DependentUpon>SlideControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\Annotations.cs" />
+    <Compile Include="Model\SequenceInfo.cs" />
+    <Compile Include="Model\StateInfo.cs" />
+    <Compile Include="Model\TransitionInfo.cs" />
     <Compile Include="ViewModels\ItemView.cs" />
     <Compile Include="ViewModels\UiElementFactory.cs" />
     <Page Include="Control\AboutDialog.xaml">
@@ -281,5 +284,6 @@
   <ItemGroup>
     <Resource Include="assets\images\clipboard_copy_small.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
