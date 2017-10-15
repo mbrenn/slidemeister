@@ -114,35 +114,6 @@
                             </ListView.View>
                         </ListView>
                     </TabItem>
-                    <TabItem>
-                        <TabItem.Header>Sequences</TabItem.Header>
-                        <ListView x:Name="SequenceView">
-                            <ListView.View>
-                                <GridView>
-                                    <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}" Width="Auto"></GridViewColumn>
-                                    <GridViewColumn Header="Transition" DisplayMemberBinding="{Binding Transition}" Width="Auto"></GridViewColumn>
-                                    <GridViewColumn Header="Next" Width="Auto">
-                                        <GridViewColumn.CellTemplate>
-                                            <DataTemplate>
-                                                <StackPanel>
-                                                    <Button Command="{Binding Initialize}">Initialize</Button>
-                                                    <Button Command="{Binding Previous}">Previous</Button>
-                                                    <Button Command="{Binding Next}">Next</Button>
-                                                </StackPanel>
-                                            </DataTemplate>
-                                        </GridViewColumn.CellTemplate>
-                                    </GridViewColumn>
-                                    <GridViewColumn Header="Previous" Width="Auto">
-                                        <GridViewColumn.CellTemplate>
-                                            <DataTemplate>
-                                                <Button Command="{Binding Play}" VerticalAlignment="Top">Play</Button>
-                                            </DataTemplate>
-                                        </GridViewColumn.CellTemplate>
-                                    </GridViewColumn>
-                                </GridView>
-                            </ListView.View>
-                        </ListView>
-                    </TabItem>
                 </TabControl>
             </Border>
         </DockPanel>

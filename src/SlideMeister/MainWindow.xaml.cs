@@ -155,9 +155,9 @@ namespace SlideMeister
 
             StateButtonsView.ItemsSource = SlideCanvas.ItemViews.Select(x => new StateInfo(this, x)).ToList();
             TransitionView.ItemsSource = Machine.Transitions.Select(x => new TransitionInfo(this, x)).ToList();
-            SequenceView.ItemsSource = Machine.Sequences.Select(x => new SequenceInfo(this, x)).ToList();
-
-            SequenceSelection.ItemsSource = SequenceView.ItemsSource;
+            SequenceSelection.ItemsSource = 
+                Machine.Sequences.Select(
+                    x => new SequenceInfo(this, x)).ToList();
         }
 
         private void Close_Click(object sender, RoutedEventArgs e)
