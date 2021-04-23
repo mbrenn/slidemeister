@@ -75,6 +75,7 @@ namespace SlideMeister.Control
         /// <param name="x">X-Coordinate to be scaled</param>
         /// <param name="y">Y-Coordinate to be scaled</param>
         /// <returns></returns>
+
         public (double resultX, double resultY) ScalePosition(DoubleWithUnit x, DoubleWithUnit y)
         {
             GetSizeAndOffsetOfRenderedBackground(out var newHeight, out var newWidth, out var offsetX, out var offsetY);
