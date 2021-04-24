@@ -1,3 +1,13 @@
+All files, except the files being located in 'assets' are released within GPL. 
+The icons in 'assets' were bought by Martin Brenn from Axialis and MAY NOT be 
+redistributed by anyone else!
+
+It is required to replace these files with your own creation, if you would
+like to create your own version of SlideMeister. 
+
+----
+
+
                     GNU GENERAL PUBLIC LICENSE
                        Version 2, June 1991
 
